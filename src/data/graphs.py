@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Sequence
 import numpy as np
 import torch
 
-from src.data.features import FeatureNormalizer, encode_item, item_signatures
+from src.data.features import FeatureNormalizer, encode_item, memory_key, observable_mask
 from src.data.labels import pair_labels
 from src.schema import RELATIONS
 
@@ -19,7 +19,7 @@ class GraphSample:
     x: torch.Tensor                 # [N, 26] 정규화된 특징
     edge_index: torch.Tensor        # [2, E], E = N(N-1)
     y: Dict[str, torch.Tensor]      # 관계별 [E] 등급
-    signatures: Dict[str, List[tuple]]   # 관계별 노드 시그니처 (aiNet 기억 키)
+    keys: List[tuple]               # 노드별 aiNet 기억 키 (SKU)
 
 
 def load_sequences(path) -> list:
@@ -55,36 +55,34 @@ def raw_features(sequence, max_nodes=None) -> np.ndarray:
     return np.stack([encode_item(it) for it in _ordered_items(sequence, max_nodes)])
 
 
-def node_signatures(items) -> Dict[str, List[tuple]]:
-    per_item = [item_signatures(it) for it in items]
-    return {r: [sig[r] for sig in per_item] for r in RELATIONS}
-
-
 def build_graph(sequence, sequence_id: int, normalizer: FeatureNormalizer,
-                max_nodes: Optional[int] = None) -> GraphSample:
+                max_nodes: Optional[int] = None, observability: str = "partial") -> GraphSample:
     items = _ordered_items(sequence, max_nodes)
     if len(items) < 2:
         raise ValueError(f"시퀀스 {sequence_id}: 상품이 2개 이상 필요합니다.")
     edges = complete_edges(len(items))
-    labels = pair_labels(items, edges[0], edges[1])
+    labels = pair_labels(items, edges[0], edges[1])        # 등급은 모든 속성으로 정해진다
+    x = normalizer.transform(np.stack([encode_item(it) for it in items]))
     return GraphSample(
         sequence_id=sequence_id,
-        x=torch.from_numpy(normalizer.transform(np.stack([encode_item(it) for it in items]))),
+        x=torch.from_numpy(x * observable_mask(observability)),   # 숨은 속성은 0
         edge_index=torch.from_numpy(edges).long(),
         y={r: torch.from_numpy(labels[r]) for r in RELATIONS},
-        signatures=node_signatures(items),
+        keys=[memory_key(it) for it in items],
     )
 
 
 def build_datasets(sequences, split: Dict[str, Sequence[int]], max_nodes=None,
-                   limits: Optional[Dict[str, Optional[int]]] = None):
+                   limits: Optional[Dict[str, Optional[int]]] = None,
+                   observability: str = "partial"):
     """정규화 통계는 학습셋에서만 계산한다."""
     limits = limits or {}
     ids = {k: list(v)[: limits.get(k) or None] for k, v in split.items()}
     normalizer = FeatureNormalizer.fit(
         [raw_features(sequences[i], max_nodes) for i in ids["train"]])
     datasets = {
-        name: [build_graph(sequences[i], i, normalizer, max_nodes) for i in id_list]
+        name: [build_graph(sequences[i], i, normalizer, max_nodes, observability)
+               for i in id_list]
         for name, id_list in ids.items()
     }
     return datasets, normalizer

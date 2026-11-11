@@ -71,3 +71,13 @@ def test_memory_strengthens_and_relaxes(sequences):
     assert (up.memory_delta["odor"] >= 0).all() and up.memory_delta["odor"].max() > 0
     assert (down.memory_delta["odor"] <= 0).all() and down.memory_delta["odor"].min() < 0
     assert up.memory_delta["odor"].max() <= model.memory_gain + 1e-6
+
+
+def test_prequential_lookup_happens_before_observation(sequences):
+    """그래프의 정답은 그 그래프의 기억 조회에 들어가지 않는다."""
+    from src.immune.ainet import AiNetMemory, prequential_pass
+    datasets, _ = build_datasets(sequences, {"train": [0, 0], "val": [2], "test": [3]})
+    model = build_model("immune", ModelConfig()).eval()
+    lookups, coverage = prequential_pass(model, datasets["train"], AiNetMemory(), "cpu")
+    assert coverage[0] == 0.0 and coverage[1] == 1.0
+    assert all(m.direction.abs().sum() == 0 for m in lookups[0].values())

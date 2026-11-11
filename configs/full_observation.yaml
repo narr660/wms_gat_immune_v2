@@ -1,0 +1,7 @@
+# 상한 비교용: 숨은 속성까지 모두 관측한다고 가정 (현장에서는 불가능한 조건)
+experiment: full_observation
+data:
+  dataset: data/processed/rs_v3.pkl
+  split: data/splits/rs_seed42.json
+  max_nodes: 100
+  observability: full

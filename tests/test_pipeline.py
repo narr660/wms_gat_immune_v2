@@ -37,17 +37,19 @@ def _run(cwd, *args):
 
 
 def test_end_to_end(tiny_project, request):
-    tmp, config = tiny_project
-    root = request.config.rootpath
-    env_args = ["--config", str(config)]
     import os
-    os.environ["PYTHONPATH"] = str(root)
-    for model in ("basic", "relation", "immune", "immune_beta0"):
-        _run(tmp, "scripts.train", *env_args, "--model", model, "--seed", "1")
+    tmp, config = tiny_project
+    os.environ["PYTHONPATH"] = str(request.config.rootpath)
+    args = ["--config", str(config), "--seed", "1"]
+    for model in ("basic", "relation", "immune"):
+        _run(tmp, "scripts.train", *args, "--model", model)
         metrics = json.loads((tmp / "outputs/unit" / f"{model}_seed1/metrics.json").read_text())
         assert 0 <= metrics["test"]["overall"]["macro_f1"] <= 1
-    _run(tmp, "scripts.eval_ainet", *env_args, "--seed", "1")
-    ainet = json.loads((tmp / "outputs/unit/immune_seed1/ainet_metrics.json").read_text())
-    assert 0 <= ainet["memory_coverage"] <= 1
-    report = _run(tmp, "scripts.make_kpi_report", *env_args)
-    assert "관계 분리 효과" in report and "aiNet 기억 OFF/ON" in report
+    _run(tmp, "scripts.train_memory", *args)
+    _run(tmp, "scripts.train_memory", *args, "--shared")
+    ainet = json.loads((tmp / "outputs/unit/immune_memory_seed1/ainet_metrics.json").read_text())
+    assert set(ainet["conditions"]) == {"off", "frozen", "online"}
+    assert ainet["conditions"]["off"]["memory_coverage"] == 0
+    report = _run(tmp, "scripts.make_kpi_report", "--config", str(config))
+    for title in ("관계 분리 효과", "DCA 효과", "aiNet 기억 효과", "관계 분리가 면역의 전제"):
+        assert title in report

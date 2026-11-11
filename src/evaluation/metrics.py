@@ -11,19 +11,33 @@ from src.schema import NUM_CLASSES, RELATIONS
 
 
 @torch.no_grad()
-def collect_confusion(model, graphs, device, memory_fn=None) -> Dict[str, np.ndarray]:
-    """memory_fn(graph) -> {relation: EdgeMemory} 를 주면 aiNet 기억을 주입한다."""
+def collect_confusion(model, graphs, device, memories=None):
+    """memories: 그래프별 {relation: EdgeMemory} 리스트. 주면 aiNet 기억을 주입한다.
+
+    반환: (시퀀스별 혼동행렬, 반발강도 오차)
+    반발강도 오차 = |rho - 실제 등급/최고 등급| 의 평균. rho 는 PART 3에서 위험
+    비용으로 쓰이므로, 위험 추정이 얼마나 정확한지를 따로 본다.
+    """
+    from src.immune.ainet import to_device
+    from src.schema import max_grade
     model.eval()
     cms = {r: np.zeros((len(graphs), NUM_CLASSES[r], NUM_CLASSES[r]), dtype=np.int64)
            for r in RELATIONS}
+    error = {r: [] for r in RELATIONS}
     for i, g in enumerate(graphs):
-        memory = memory_fn(g) if memory_fn else None
+        memory = to_device(memories[i], device) if memories is not None else None
         out = model(g.x.to(device), g.edge_index.to(device), memory=memory)
         for r in RELATIONS:
             k = NUM_CLASSES[r]
             pred = out.logits[r].argmax(-1).cpu()
             cms[r][i] = torch.bincount(g.y[r] * k + pred, minlength=k * k).view(k, k).numpy()
-    return cms
+            if r in out.repulsion:
+                target = g.y[r].float() / max_grade(r)
+                error[r].append(float((out.repulsion[r].squeeze(-1).cpu() - target).abs().mean()))
+    rho_error = {r: float(np.mean(v)) for r, v in error.items() if v}
+    if rho_error:
+        rho_error["mean"] = float(np.mean(list(rho_error.values())))
+    return cms, rho_error
 
 
 def _prf(cm: np.ndarray):

@@ -10,16 +10,18 @@ REPO = "https://github.com/narr660/<새 저장소 이름>.git"
 !python -m pytest -q
 
 # 2) 동작 확인 (수 분)
-for m in ["basic", "relation", "immune", "immune_beta0"]:
+for m in ["basic", "relation", "immune"]:
     !python -m scripts.train --config configs/smoke.yaml --model {m} --seed 42
-!python -m scripts.eval_ainet --config configs/smoke.yaml --seed 42
+!python -m scripts.train_memory --config configs/smoke.yaml --seed 42
+!python -m scripts.train_memory --config configs/smoke.yaml --seed 42 --shared
 !python -m scripts.make_kpi_report --config configs/smoke.yaml
 
-# 3) 본 실험 (GPU 권장, 시드 3개)
+# 3) 본 실험 (GPU 권장)
 for seed in [42, 43, 44]:
-    for m in ["basic", "relation", "immune", "immune_beta0"]:
+    for m in ["basic", "relation", "immune"]:
         !python -m scripts.train --config configs/main.yaml --model {m} --seed {seed}
-    !python -m scripts.eval_ainet --config configs/main.yaml --seed {seed}
+    !python -m scripts.train_memory --config configs/main.yaml --seed {seed}
+    !python -m scripts.train_memory --config configs/main.yaml --seed {seed} --shared
 !python -m scripts.make_kpi_report --config configs/main.yaml
 ```
 

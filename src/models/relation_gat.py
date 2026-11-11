@@ -2,6 +2,9 @@
 
 관계(냄새·오염·물리)마다 독립된 인코더를 두고, 방향성 반발강도 rho로
 2차 메시지 전달을 증폭한다:  m_ij = alpha_ij (1 + lambda * rho_ij) W h_i
+
+등급 헤드는 간선 입력 [h_i, h_j, x_i, x_j]에 그 간선의 반발강도 rho_ij를 더해
+받는다. 면역이 보정한 반발강도가 해당 상품 쌍의 등급 판단에 직접 반영된다.
 """
 import torch
 from torch import nn
@@ -40,7 +43,7 @@ class RelationGAT(nn.Module):
             for r in RELATIONS})
         pair_dim = 2 * (hidden_dim + input_dim)
         self.heads = nn.ModuleDict(
-            {r: mlp(pair_dim, hidden_dim, NUM_CLASSES[r]) for r in RELATIONS})
+            {r: mlp(pair_dim + 1, hidden_dim, NUM_CLASSES[r]) for r in RELATIONS})
 
     def adjust(self, relation, features, base_repulsion, memory, out: ModelOutput):
         """면역 보정 지점. 관계 분리형 GAT는 보정하지 않는다."""
@@ -56,5 +59,6 @@ class RelationGAT(nn.Module):
             out.base_repulsion[r] = base
             out.repulsion[r] = rho
             out.embeddings[r] = h2
-            out.logits[r] = self.heads[r](pair_features(h2, x, edge_index))
+            out.logits[r] = self.heads[r](
+                torch.cat([pair_features(h2, x, edge_index), rho], dim=-1))
         return out

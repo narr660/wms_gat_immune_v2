@@ -6,6 +6,7 @@ import numpy as np
 import torch
 
 from src.config import ExperimentConfig
+from src.data.catalog import SkuCatalog
 from src.data.graphs import build_datasets, load_sequences, load_split
 from src.training.losses import class_weights
 
@@ -16,10 +17,13 @@ def device_auto() -> torch.device:
 
 def prepare_data(cfg: ExperimentConfig):
     sequences = load_sequences(cfg.data.dataset)
+    if cfg.data.sku_catalog:
+        sequences = SkuCatalog(sequences).apply(sequences)
     split = load_split(cfg.data.split)
     limits = {"train": cfg.data.limit_train, "val": cfg.data.limit_val,
               "test": cfg.data.limit_test}
-    datasets, normalizer = build_datasets(sequences, split, cfg.data.max_nodes, limits)
+    datasets, normalizer = build_datasets(sequences, split, cfg.data.max_nodes, limits,
+                                          cfg.data.observability)
     weights = class_weights(datasets["train"], cfg.train.class_weight_cap)
     return datasets, normalizer, weights
 

@@ -10,5 +10,6 @@ data:
 train:
   max_epochs: 3
   patience: 3
+  memory_epochs: 1
 eval:
   bootstrap: 200

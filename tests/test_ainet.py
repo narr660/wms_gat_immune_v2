@@ -5,20 +5,19 @@ from src.config import AiNetConfig
 from src.immune.ainet import AiNetMemory
 from src.schema import RELATIONS
 
-NODES = [("a",), ("b",), ("c",)]
-SIGS = {r: NODES for r in RELATIONS}
+SIGS = [("a",), ("b",), ("c",)]
 EDGES = torch.tensor([[0, 1, 0], [1, 0, 2]])      # a->b, b->a, a->c
 
 
-def _values(odor):
-    zeros = np.zeros(3)
-    return {"odor": np.asarray(odor, dtype=float), "contamination": zeros, "physical": zeros}
+def _values(odor, other=0.0):
+    rest = np.full(3, other)
+    return {"odor": np.asarray(odor, dtype=float), "contamination": rest, "physical": rest}
 
 
 def test_unseen_pairs_have_no_memory():
     memory, coverage = AiNetMemory().lookup(SIGS, EDGES)
+    assert coverage == 0.0
     for r in RELATIONS:
-        assert coverage[r] == 0.0
         assert memory[r].strength.abs().sum() == 0 and memory[r].direction.abs().sum() == 0
 
 
@@ -30,20 +29,32 @@ def test_risky_experience_strengthens_only_that_direction():
                       exposure=_values([1.0, 0.0, 0.5]))
     memory, coverage = ainet.lookup(SIGS, EDGES)
     odor = memory["odor"]
-    assert coverage["odor"] == 1.0
+    assert coverage == 1.0
     assert odor.direction[0] > 0 and odor.strength[0] > 0      # 강화
-    assert odor.direction[1] < 0 and odor.strength[1] == 0     # 완화 (기억은 늘지 않음)
+    assert odor.direction[1] < 0                               # 완화
     assert odor.direction[2] == 0                              # 예측과 같으면 그대로
+    assert (odor.strength <= odor.confidence + 1e-6).all()     # 강도 = 친화도 x 신뢰도
     assert torch.isclose(odor.confidence[0], torch.tensor(3 / (3 + 3.0)))
 
 
-def test_memory_is_keyed_by_signature_not_item():
+def test_memory_is_keyed_by_sku_pair_not_graph_position():
     ainet = AiNetMemory()
     ainet.observe(SIGS, EDGES, _values([0.2, 0.2, 0.2]), _values([1.0, 1.0, 1.0]))
     # 다른 그래프, 다른 노드 순서지만 같은 종류의 상품 쌍
-    other = {r: [("b",), ("a",)] for r in RELATIONS}
-    memory, coverage = ainet.lookup(other, torch.tensor([[1], [0]]))
-    assert coverage["odor"] == 1.0 and memory["odor"].strength[0] > 0
+    memory, coverage = ainet.lookup([("b",), ("a",)], torch.tensor([[1], [0]]))
+    assert coverage == 1.0 and memory["odor"].strength[0] > 0
+
+
+def test_shared_memory_mixes_relations():
+    """관계를 구분하지 않으면 냄새 경험이 오염·물리 보정으로 번진다."""
+    ainet = AiNetMemory()
+    for _ in range(3):
+        ainet.observe(SIGS, EDGES, expected=_values([0.1, 0.1, 0.1], other=0.1),
+                      exposure=_values([1.0, 1.0, 1.0], other=0.1))
+    separate, _ = ainet.lookup(SIGS, EDGES)
+    shared, _ = ainet.lookup(SIGS, EDGES, shared=True)
+    assert separate["odor"].direction[0] > 0 and separate["physical"].direction[0] == 0
+    assert shared["physical"].direction[0] > 0
 
 
 def test_clone_count_is_bounded_and_values_valid():

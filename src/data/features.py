@@ -1,7 +1,9 @@
-"""상품 특징 인코딩 (26차원)과 aiNet 기억용 상품 시그니처.
+"""상품 특징 인코딩 (26차원)과 aiNet 기억 키.
 
-레이블 규칙이 사용하는 속성을 모두 포함한다. 도착 순서처럼 위험과
-무관한 값은 넣지 않는다.
+관측 가능한 속성(치수·무게·분류·포장·표시)과 도착 시점에는 알 수 없는
+속성(누출 위험, 냄새 프로필, 지지 한계)을 구분한다. 부분 관측 설정에서는
+숨은 속성 자리를 0으로 둔다. 숨은 속성은 적재 후 관측된 노출 경험으로만
+드러나며, 그 경험을 aiNet이 기억한다.
 """
 from dataclasses import dataclass
 from typing import Dict, List, Sequence
@@ -29,6 +31,20 @@ FEATURE_NAMES: List[str] = (
 FEATURE_DIM = len(FEATURE_NAMES)
 N_CONTINUOUS = len(CONTINUOUS)
 assert FEATURE_DIM == 26
+
+# 도착 시점에 상품 마스터 정보로는 알 수 없는 속성
+HIDDEN_FEATURES = ("max_supported_weight", "log_max_supported_weight", "leak_risk",
+                   "odor_profile=release", "odor_profile=absorb", "odor_profile=neutral")
+
+
+def observable_mask(observability: str = "partial") -> np.ndarray:
+    """1 = 모델에 보이는 특징. full 은 모든 속성을 본다 (상한 비교용)."""
+    if observability == "full":
+        return np.ones(FEATURE_DIM, dtype=np.float32)
+    if observability != "partial":
+        raise ValueError(f"observability 는 partial 또는 full: {observability}")
+    return np.asarray([0.0 if n in HIDDEN_FEATURES else 1.0 for n in FEATURE_NAMES],
+                      dtype=np.float32)
 
 
 def _one_hot(value, choices: Sequence[str], field: str) -> List[float]:
@@ -81,23 +97,9 @@ class FeatureNormalizer:
                    std=np.asarray(data["std"], dtype=np.float32))
 
 
-# ---------------------------------------------------------------- 시그니처
-# aiNet 기억은 개별 상품이 아니라 "어떤 종류의 상품인가"로 저장한다.
-# 그래야 처음 보는 상품에도 같은 종류의 경험을 적용할 수 있다.
-# 관계마다 그 위험과 관련된 속성만 키로 쓴다 (관계별 기억).
-_LEAK_BINS = np.array([0.15, 0.35, 0.65, 0.8])
-_WEIGHT_BINS = np.array([1.0, 3.0, 8.0, 20.0, 50.0])
-
-
-def item_signatures(item: Dict) -> Dict[str, tuple]:
-    return {
-        "odor": (item["odor_profile"], bool(item["sealed"])),
-        "contamination": (
-            item["hazard_type"], float(item.get("hazard_level", 0.0)) >= 0.7,
-            int(np.digitize(float(item["leak_risk"]), _LEAK_BINS)),
-            bool(item["sealed"]), item["category"] == "식품", bool(item["is_electronic"])),
-        "physical": (
-            bool(item["fragile"]),
-            int(np.digitize(float(item["weight_sim"]), _WEIGHT_BINS)),
-            int(np.digitize(float(item["max_supported_weight_sim"]), _WEIGHT_BINS))),
-    }
+# ---------------------------------------------------------------- 기억 키
+def memory_key(item: Dict) -> tuple:
+    """aiNet 기억 키 = SKU. 같은 SKU 쌍의 경험이 한곳에 쌓인다."""
+    if "sku_id" in item:
+        return (int(item["sku_id"]),)
+    return (str(item["category"]), tuple(float(v) for v in item["size"]))

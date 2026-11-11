@@ -1,12 +1,14 @@
 """aiNet 면역 기억.
 
-상품 쌍(시그니처) x 관계별로 다음을 기억한다.
-  - 위험 기억 M : 클론 친화도. 위험 노출 경험(항원)에 가까워지도록 선택·변이·억제
+SKU 쌍 (i -> j) x 관계별로 다음을 기억한다.
+  - 클론        : 관측된 위험 노출(항원)에 가까워지도록 선택·변이·억제되는 기억 세포
   - 관측 신뢰도 C: n / (n + kappa), n = 관측 횟수
-  - 보정 방향 s : clip((평균 관측 노출 - 평균 예측 위험) / tau, -1, 1)
+  - 기억 강도 M : 친화도 x C. 친화도 = 1 - |가장 가까운 클론 - 평균 관측 노출|
+                  (기억이 경험과 얼마나 일치하는가). 경험이 일관되고 반복될수록 1에 가깝다
+  - 보정 방향 s : clip((평균 관측 노출 - 평균 예측 반발강도) / tau, -1, 1)
 
-키는 개별 상품이 아니라 관계별 상품 시그니처(그 위험과 관련된 속성 조합)
-이므로, 처음 보는 상품에도 같은 종류의 경험을 적용할 수 있다.
+모델은 이 값으로 반발강도를 보정한다 (src/models/immune_gat.py):
+  rho_m4 = clip(rho_dca + gamma * (M * max(s, 0) + C * min(s, 0)), 0, 1)
 """
 import pickle
 from typing import Dict, List, Optional
@@ -16,14 +18,13 @@ import torch
 
 from src.config import AiNetConfig
 from src.models.outputs import EdgeMemory
-from src.schema import RELATIONS
+from src.schema import RELATIONS, max_grade
 
 _BASE = 1 << 31
 
 
 class _RelationStore:
     def __init__(self, clone_count: int):
-        self.signature_ids: Dict[tuple, int] = {}
         self.rows: Dict[int, int] = {}
         self.clones = np.full((1024, clone_count), np.nan)
         self.count = np.zeros(1024)
@@ -53,53 +54,47 @@ class AiNetMemory:
     def __init__(self, cfg: Optional[AiNetConfig] = None, seed: int = 42):
         self.cfg = cfg or AiNetConfig()
         self.rng = np.random.default_rng(seed)
+        self.node_ids: Dict[tuple, int] = {}
         self.stores = {r: _RelationStore(self.cfg.clone_count) for r in RELATIONS}
 
     # ------------------------------------------------------------ 키 계산
-    def _edge_keys(self, relation, signatures: List[tuple], edge_index, create: bool):
-        """간선 (i -> j)의 기억 키 = (출발 상품 시그니처, 도착 상품 시그니처)."""
-        table = self.stores[relation].signature_ids
-        ids = np.empty(len(signatures), dtype=np.int64)
-        for i, sig in enumerate(signatures):
-            sid = table.get(sig, -1)
-            if sid < 0 and create:
-                sid = len(table)
-                table[sig] = sid
-            ids[i] = sid
+    def _edge_keys(self, keys: List[tuple], edge_index, create: bool):
+        """간선 (i -> j)의 기억 키 = (출발 SKU, 도착 SKU)."""
+        ids = np.empty(len(keys), dtype=np.int64)
+        for i, key in enumerate(keys):
+            node = self.node_ids.get(key, -1)
+            if node < 0 and create:
+                node = len(self.node_ids)
+                self.node_ids[key] = node
+            ids[i] = node
         edges = edge_index.cpu().numpy() if torch.is_tensor(edge_index) else np.asarray(edge_index)
         src, dst = ids[edges[0]], ids[edges[1]]
         known = (src >= 0) & (dst >= 0)
         return np.where(known, src * _BASE + dst, -1), known
 
     # ------------------------------------------------------------ 기억 갱신
-    def observe(self, signatures: Dict[str, List[tuple]], edge_index,
-                expected: Dict[str, np.ndarray], exposure: Dict[str, np.ndarray],
-                activation: Optional[Dict[str, np.ndarray]] = None):
+    def observe(self, keys: List[tuple], edge_index,
+                expected: Dict[str, np.ndarray], exposure: Dict[str, np.ndarray]):
         """한 그래프(또는 적재 한 단계)의 관측으로 기억을 갱신한다.
 
-        signatures: 관계별 노드 시그니처
-        expected  : 관계별 [E] 모델의 기대 위험 (0~1)
-        exposure  : 관계별 [E] 관측된 노출 (0~1)
-        activation: 관계별 [E] DCA 활성 (없으면 1)
+        expected: 관계별 [E] 모델이 예측한 반발강도 (0~1)
+        exposure: 관계별 [E] 관측된 노출 (0~1) — 항원
         """
+        edge_keys, _ = self._edge_keys(keys, edge_index, create=True)
+        unique, inverse = np.unique(edge_keys, return_inverse=True)
+        n = np.bincount(inverse, minlength=len(unique)).astype(float)
         for r in RELATIONS:
             store = self.stores[r]
-            keys, _ = self._edge_keys(r, signatures[r], edge_index, create=True)
-            unique, inverse = np.unique(keys, return_inverse=True)
-            n = np.bincount(inverse, minlength=len(unique)).astype(float)
             rows = store.rows_for(unique, create=True)
             obs_sum = np.bincount(inverse, weights=exposure[r], minlength=len(unique))
             exp_sum = np.bincount(inverse, weights=expected[r], minlength=len(unique))
-            act = (np.bincount(inverse, weights=activation[r], minlength=len(unique)) / n
-                   if activation else np.ones(len(unique)))
             store.count[rows] += n
             store.sum_observed[rows] += obs_sum
             store.sum_expected[rows] += exp_sum
-            observed, predicted = obs_sum / n, exp_sum / n
-            antigen = np.clip(predicted * observed * act, 0.0, 1.0)
-            store.clones[rows] = self._clonal_update(store.clones[rows], antigen, observed * act)
+            antigen = np.clip(obs_sum / n, 0.0, 1.0)     # 항원 = 실제로 겪은 위험 노출
+            store.clones[rows] = self._clonal_update(store.clones[rows], antigen)
 
-    def _clonal_update(self, clones, antigen, scale):
+    def _clonal_update(self, clones, antigen):
         """클론 선택 -> 변이 -> 억제. clones: [U, K] (빈 칸은 NaN)."""
         cfg, k = self.cfg, clones.shape[1]
         clones = clones.copy()
@@ -111,7 +106,7 @@ class AiNetMemory:
         mutation = self.rng.uniform(-cfg.mutation_rate, cfg.mutation_rate, clones.shape)
         offspring = np.clip(
             selected[:, None] + cfg.learning_rate * (antigen - selected)[:, None]
-            + mutation * scale[:, None], 0.0, 1.0)
+            + mutation, 0.0, 1.0)
 
         candidates = np.concatenate([clones, offspring], axis=1)
         distance = np.where(np.isnan(candidates), np.inf,
@@ -130,35 +125,44 @@ class AiNetMemory:
         return kept
 
     # ------------------------------------------------------------ 기억 조회
-    def lookup(self, signatures: Dict[str, List[tuple]], edge_index, device="cpu"):
-        """간선별 기억 -> ({relation: EdgeMemory}, {relation: 기억 적용률})."""
-        memory, coverage = {}, {}
+    def lookup(self, keys: List[tuple], edge_index, shared: bool = False):
+        """간선별 기억 -> ({relation: EdgeMemory}, 기억 적용률). 텐서는 CPU에 둔다.
+
+        shared=True 는 관계를 구분하지 않는 기억(세 관계의 평균)을 돌려준다.
+        관계 분리가 없을 때의 면역을 재현하는 비교 조건이다.
+        """
+        edge_keys, known = self._edge_keys(keys, edge_index, create=False)
+        unique, inverse = (np.unique(edge_keys[known], return_inverse=True)
+                           if known.any() else (np.empty(0, dtype=np.int64), None))
+        values, seen_any = {}, np.zeros(len(edge_keys), dtype=bool)
         for r in RELATIONS:
             store = self.stores[r]
-            keys, known = self._edge_keys(r, signatures[r], edge_index, create=False)
-            rows = np.full(len(keys), -1, dtype=np.int64)
-            if known.any():
-                unique, inverse = np.unique(keys[known], return_inverse=True)
+            rows = np.full(len(edge_keys), -1, dtype=np.int64)
+            if inverse is not None:
                 rows[known] = store.rows_for(unique, create=False)[inverse]
             seen = rows >= 0
             safe_rows = np.where(seen, rows, 0)
             n = np.where(seen, store.count[safe_rows], 0.0)
-            clones = np.where(np.isnan(store.clones[safe_rows]), -np.inf, store.clones[safe_rows])
-            strength = np.where(seen, np.clip(clones.max(axis=1), 0.0, 1.0), 0.0)
             mean_obs = np.divide(store.sum_observed[safe_rows], n, out=np.zeros_like(n), where=n > 0)
             mean_exp = np.divide(store.sum_expected[safe_rows], n, out=np.zeros_like(n), where=n > 0)
-            direction = np.where(seen, np.clip((mean_obs - mean_exp) / self.cfg.tau, -1, 1), 0.0)
             confidence = n / (n + self.cfg.kappa)
+            mismatch = np.abs(store.clones[safe_rows] - mean_obs[:, None])
+            mismatch = np.where(np.isnan(mismatch), np.inf, mismatch).min(axis=1)
+            affinity = np.where(seen, np.clip(1.0 - mismatch, 0.0, 1.0), 0.0)
+            direction = np.where(seen, np.clip((mean_obs - mean_exp) / self.cfg.tau, -1, 1), 0.0)
+            values[r] = (affinity * confidence, direction, confidence)
+            seen_any |= seen
+        if shared:
+            mean = tuple(np.mean([values[r][i] for r in RELATIONS], axis=0) for i in range(3))
+            values = {r: mean for r in RELATIONS}
 
-            def tensor(a):
-                return torch.as_tensor(a, dtype=torch.float32, device=device).view(-1, 1)
-            memory[r] = EdgeMemory(tensor(strength), tensor(direction), tensor(confidence))
-            coverage[r] = float(seen.mean()) if len(keys) else 0.0
-        return memory, coverage
+        def tensor(a):
+            return torch.as_tensor(a, dtype=torch.float32).view(-1, 1)
+        memory = {r: EdgeMemory(*(tensor(v) for v in values[r])) for r in RELATIONS}
+        return memory, float(seen_any.mean()) if len(edge_keys) else 0.0
 
-    # ------------------------------------------------------------ 저장
-    def size(self) -> Dict[str, int]:
-        return {r: len(self.stores[r].rows) for r in RELATIONS}
+    def size(self) -> int:
+        return len(self.stores[RELATIONS[0]].rows)
 
     def save(self, path):
         with open(path, "wb") as f:
@@ -170,26 +174,32 @@ class AiNetMemory:
             return pickle.load(f)
 
 
-@torch.no_grad()
-def build_memory_from_training(model, train_graphs, cfg: AiNetConfig, device,
-                               seed: int = 42) -> AiNetMemory:
-    """학습 그래프만으로 기억을 만든다. 검증·테스트 정답은 쓰지 않는다.
+def to_device(memory: Optional[Dict[str, EdgeMemory]], device):
+    if memory is None:
+        return None
+    return {r: EdgeMemory(m.strength.to(device), m.direction.to(device), m.confidence.to(device))
+            for r, m in memory.items()}
 
-    관측 노출 O = 실제 등급 / 최고 등급, 예측 위험 R = 등급 확률의 기댓값(0~1).
+
+@torch.no_grad()
+def prequential_pass(model, graphs, memory: AiNetMemory, device,
+                     update: bool = True, shared: bool = False):
+    """그래프를 순서대로 지나가며 "조회 -> (예측) -> 관측 -> 갱신"을 수행한다.
+
+    각 그래프의 기억은 그 그래프를 관측하기 **전에** 조회하므로, 자기 자신의
+    정답이 기억에 들어가지 않는다. update=False 면 조회만 한다 (기억 고정).
+
+    반환: (그래프별 기억 리스트, 그래프별 기억 적용률 리스트)
     """
-    from src.schema import max_grade
-    memory = AiNetMemory(cfg, seed)
     model.eval()
-    for g in train_graphs:
-        out = model(g.x.to(device), g.edge_index.to(device))
-        expected, exposure, activation = {}, {}, {}
-        for r in RELATIONS:
-            probs = torch.softmax(out.logits[r], dim=-1)
-            grades = torch.arange(probs.shape[1], device=probs.device, dtype=probs.dtype)
-            expected[r] = ((probs * grades).sum(-1) / max_grade(r)).cpu().numpy()
-            exposure[r] = (g.y[r].float() / max_grade(r)).numpy()
-            if out.danger:
-                act = 0.5 * out.danger[r] + 0.5 * (1.0 - out.safe[r])
-                activation[r] = act.squeeze(-1).clamp(0, 1).cpu().numpy()
-        memory.observe(g.signatures, g.edge_index, expected, exposure, activation or None)
-    return memory
+    lookups, coverage = [], []
+    for g in graphs:
+        edge_memory, covered = memory.lookup(g.keys, g.edge_index, shared=shared)
+        lookups.append(edge_memory)
+        coverage.append(covered)
+        if update:
+            out = model(g.x.to(device), g.edge_index.to(device))      # 기억 없이 예측
+            expected = {r: out.dca_repulsion[r].squeeze(-1).cpu().numpy() for r in RELATIONS}
+            exposure = {r: (g.y[r].float() / max_grade(r)).numpy() for r in RELATIONS}  # 관측
+            memory.observe(g.keys, g.edge_index, expected, exposure)
+    return lookups, coverage

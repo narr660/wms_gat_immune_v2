@@ -38,9 +38,10 @@ def main():
     metrics = {"model": args.model, "seed": args.seed, "best_epoch": info["best_epoch"],
                "parameters": info["parameters"], "seconds": info["seconds"]}
     for split in ("val", "test"):
-        cms = collect_confusion(model, datasets[split], device)
+        cms, rho_error = collect_confusion(model, datasets[split], device)
         save_confusion(out / f"cms_{split}.npz", cms)
         metrics[split] = summarize(cms)
+        metrics[split]["rho_error"] = rho_error
     if hasattr(model, "beta"):
         metrics["beta"] = {r: float(p.detach()) for r, p in model.beta.items()}
 

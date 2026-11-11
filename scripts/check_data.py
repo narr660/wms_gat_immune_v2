@@ -7,6 +7,7 @@ import json
 import sys
 from pathlib import Path
 
+from src.data.catalog import SkuCatalog
 from src.data.graphs import load_sequences, load_split
 
 EXPECTED = {
@@ -45,6 +46,9 @@ def main() -> int:
         print(f"[{'일치' if same else '다름'}] {name} | 시퀀스 {len(sequences)} | "
               f"첫 시퀀스 상품 {len(sequences[0])} | 누락 속성 {missing or '없음'}")
         ok &= same and not missing and len(sequences) == expected["sequences"]
+        catalog = SkuCatalog(sequences)
+        items = sum(len(seq) for seq in sequences)
+        print(f"[SKU] 종류 {len(catalog)} | 상품 {items} | SKU당 평균 {items / len(catalog):.0f}회 등장")
     split_path = Path("data/splits/rs_seed42.json")
     if split_path.exists():
         split = load_split(split_path)
