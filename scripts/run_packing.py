@@ -115,6 +115,8 @@ def main():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--limit", type=int, default=None, help="테스트 시퀀스 수 제한")
     parser.add_argument("--no-rotation", action="store_true", help="축 정렬 회전 끄기 (비교용)")
+    parser.add_argument("--newbox-weight", type=float, default=None,
+                        help="새 박스 비용 (기본: 스윕 균형점 1.0)")
     parser.add_argument("--conditions", default=None,
                         help="쉼표로 조건 선택 (예: space,risk). 기본: 전부")
     args = parser.parse_args()
@@ -150,11 +152,13 @@ def main():
     test_ids = split["test"][: args.limit or None]
 
     policy = PolicyConfig()
+    if args.newbox_weight is not None:
+        policy.newbox_weight = args.newbox_weight
     selected = {k: v for k, v in CONDITIONS.items()
                 if args.conditions is None or k in args.conditions.split(",")}
     assert selected, f"--conditions 가 비었습니다: {args.conditions}"
     rotation = not args.no_rotation
-    print(f"회전: {'켜짐 (축 정렬)' if rotation else '꺼짐'} | 조건: {list(selected)}")
+    print(f"회전: {'켜짐 (축 정렬)' if rotation else '꺼짐'} | 새 박스 비용: {policy.newbox_weight} | 조건: {list(selected)}")
     results = {name: [] for name in selected}
     for name, flags in selected.items():
         memory = copy.deepcopy(base_memory) if flags["memory"] and base_memory else None
@@ -197,7 +201,7 @@ def main():
     base_name = "space" if "space" in results else next(iter(results))
     base_exposure = np.mean([r["exposure"] for r in results[base_name]]) or 1.0
     lines = [f"# PART 3 (1단계) 적재 결과 — 시드 {args.seed}, 테스트 {len(test_ids)}개 시퀀스, "
-             f"회전 {'켜짐' if rotation else '꺼짐'}", "",
+             f"회전 {'켜짐' if rotation else '꺼짐'}, 새 박스 비용 {policy.newbox_weight}", "",
              f"| 조건 | 위험 노출 지수 ({base_name}=100) | 고위험 동적재 (합) | 금지 위반 (합) | 박스 수 (평균) | 활용률 (평균) |",
              "|---|---|---|---|---|---|"]
     for name, rows in results.items():
