@@ -41,6 +41,7 @@ CONDITIONS = {
     "risk_memory": dict(forbidden=True,  mask=True,  risk_cost=True,  memory=True),
     # 2단계: risk_memory와 같은 안전 설정에서 탐욕 대신 PPO 정책이 고른다
     "ppo":         dict(forbidden=True,  mask=True,  risk_cost=True,  memory=True, ppo=True),
+    "ppo_nomem":   dict(forbidden=True,  mask=True,  risk_cost=True,  memory=False, ppo=True),
 }
 
 
