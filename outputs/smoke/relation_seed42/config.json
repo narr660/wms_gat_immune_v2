@@ -1,0 +1,37 @@
+{
+  "experiment": "smoke",
+  "data": {
+    "dataset": "data/processed/rs_v3.pkl",
+    "split": "data/splits/rs_seed42.json",
+    "max_nodes": 12,
+    "limit_train": 120,
+    "limit_val": 40,
+    "limit_test": 40
+  },
+  "model": {
+    "hidden_dim": 32,
+    "heads": 4,
+    "lambda_repulsion": 1.0,
+    "initial_beta": 0.5,
+    "memory_gain": 0.2
+  },
+  "train": {
+    "max_epochs": 3,
+    "patience": 3,
+    "lr": 0.001,
+    "weight_decay": 0.0,
+    "lambda_rep_loss": 0.5,
+    "class_weight_cap": 8.0
+  },
+  "ainet": {
+    "clone_count": 5,
+    "learning_rate": 0.25,
+    "mutation_rate": 0.04,
+    "suppression_distance": 0.04,
+    "tau": 0.25,
+    "kappa": 3.0
+  },
+  "eval": {
+    "bootstrap": 200
+  }
+}
