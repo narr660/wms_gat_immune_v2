@@ -89,3 +89,18 @@ aiNet은 같은 체크포인트에서 세 조건으로 평가한다: `off`(기�
 - 강화(+ 방향, `memory_gain`)와 완화(- 방향, `memory_gain_relax`)는 세기를 따로 건다. 완화는 클론 친화도 검증 없이 관측 횟수만으로 걸리므로, 세게 두면 양끝 등급은 좋아져도 중간 등급이 아래로 과도하게 끌려 나빠질 수 있다(`scripts/relation_breakdown.py`로 등급별 F1을 보면 보인다). `memory_gain_relax`에 없는 관계는 `memory_gain`과 같은 값을 써서 기존과 같은 대칭 동작이 된다.
 - `frozen` 조건은 테스트 정답을 전혀 쓰지 않는다. `online` 조건은 예측을 마친 시퀀스의 관측만 이후 예측에 쓴다.
 - 테스트셋은 모델을 확정한 뒤 평가에만 쓴다.
+
+## PART 3 (1단계) — 안전 필터 적재
+
+학습된 immune 모델을 적재 의사결정에 연결한다. 안전 판정은 3단:
+금지 규칙(관측 가능한 속성만) → P(최고 등급) >= theta_r 마스킹(theta는 검증셋에서 재현율 기준으로 선택) → 보정 반발강도를 박스 위험 비용으로.
+
+```bash
+python -m scripts.select_threshold --config configs/main.yaml --seed 42   # theta 선택 (검증셋)
+python -m scripts.run_packing      --config configs/main.yaml --seed 42   # 4조건 비교
+python -m scripts.grade_flow       --config configs/main.yaml             # 등급 이동 확인 (재학습 불필요)
+```
+
+적재 비교 조건: space(기준선) / filter(금지+마스킹) / risk(+위험 비용) / risk_memory(+aiNet 기억, 시퀀스 단위 고리 ②).
+지표: 위험 노출 지수(space=100), 고위험 동적재, 금지 위반, 박스 수, 활용률. 2단계(PPO)는 이 환경 위에 올린다.
+

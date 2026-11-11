@@ -150,10 +150,10 @@ class AiNetMemory:
             mismatch = np.where(np.isnan(mismatch), np.inf, mismatch).min(axis=1)
             affinity = np.where(seen, np.clip(1.0 - mismatch, 0.0, 1.0), 0.0)
             direction = np.where(seen, np.clip((mean_obs - mean_exp) / self.cfg.tau, -1, 1), 0.0)
-            values[r] = (affinity * confidence, direction, confidence)
+            values[r] = (affinity * confidence, direction, confidence, mean_obs)
             seen_any |= seen
         if shared:
-            mean = tuple(np.mean([values[r][i] for r in RELATIONS], axis=0) for i in range(3))
+            mean = tuple(np.mean([values[r][i] for r in RELATIONS], axis=0) for i in range(4))
             values = {r: mean for r in RELATIONS}
 
         def tensor(a):
@@ -177,7 +177,8 @@ class AiNetMemory:
 def to_device(memory: Optional[Dict[str, EdgeMemory]], device):
     if memory is None:
         return None
-    return {r: EdgeMemory(m.strength.to(device), m.direction.to(device), m.confidence.to(device))
+    return {r: EdgeMemory(m.strength.to(device), m.direction.to(device), m.confidence.to(device),
+                          None if m.target is None else m.target.to(device))
             for r, m in memory.items()}
 
 

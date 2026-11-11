@@ -82,6 +82,14 @@ class ImmuneGAT(RelationGAT):
                 gain_up * m.strength.clamp(0, 1) * direction.clamp(min=0)
                 + gain_down * m.confidence.clamp(0, 1) * direction.clamp(max=0))
             adjusted = (rho + delta).clamp(0.0, 1.0)
+            if m.target is not None:
+                # 기억된 관측값을 지나치지 않는다: 등급 3(0.75)인 쌍을 위로 끌어도
+                # 0.75에서 멈춰, 등급 4 영역으로 넘어가 오분류되는 것을 막는다.
+                target = m.target.clamp(0.0, 1.0)
+                adjusted = torch.where(delta > 0, torch.minimum(adjusted, torch.maximum(rho, target)),
+                                       adjusted)
+                adjusted = torch.where(delta < 0, torch.maximum(adjusted, torch.minimum(rho, target)),
+                                       adjusted)
             out.memory_delta[relation] = adjusted - rho
             rho = adjusted
         return rho

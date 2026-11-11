@@ -129,3 +129,31 @@ def test_prequential_lookup_happens_before_observation(sequences):
     lookups, coverage = prequential_pass(model, datasets["train"], AiNetMemory(), "cpu")
     assert coverage[0] == 0.0 and coverage[1] == 1.0
     assert all(m.direction.abs().sum() == 0 for m in lookups[0].values())
+
+
+def test_memory_pull_stops_at_remembered_target(sequences):
+    """보정은 기억된 관측값(target)을 향해 끌어당기되 지나치지 않는다."""
+    g = _graph(sequences)
+    cfg = ModelConfig()
+    cfg.memory_gain = {"odor": 1.0, "contamination": 0.0, "physical": 0.0}   # 일부러 큰 세기
+    cfg.memory_gain_relax = {"odor": 1.0}
+    model = build_model("immune", cfg).eval()
+    e = g.edge_index.shape[1]
+    ones = torch.ones(e, 1)
+
+    base = model(g.x, g.edge_index).repulsion["odor"]
+    target = torch.full((e, 1), 0.75)                        # 등급 3/4 에 해당하는 관측값
+
+    up = model(g.x, g.edge_index,
+               memory={"odor": EdgeMemory(ones, ones, torch.zeros(e, 1), target)})
+    down = model(g.x, g.edge_index,
+                 memory={"odor": EdgeMemory(torch.zeros(e, 1), -ones, ones, target)})
+
+    # 위로 끌 때: target보다 낮던 rho는 target을 넘지 못하고, 이미 높던 rho는 그대로
+    below = base < 0.75
+    assert (up.repulsion["odor"][below] <= 0.75 + 1e-6).all()
+    assert torch.allclose(up.repulsion["odor"][~below], base[~below])
+    # 아래로 끌 때: target보다 높던 rho는 target 아래로 내려가지 않는다
+    above = base > 0.75
+    assert (down.repulsion["odor"][above] >= 0.75 - 1e-6).all()
+    assert torch.allclose(down.repulsion["odor"][~above], base[~above])

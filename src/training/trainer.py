@@ -47,7 +47,8 @@ def _drop(memory, rate: float, generator):
     dropped = {}
     for r, m in memory.items():
         keep = (torch.rand(m.direction.shape, generator=generator) >= rate).float()
-        dropped[r] = EdgeMemory(m.strength * keep, m.direction * keep, m.confidence * keep)
+        dropped[r] = EdgeMemory(m.strength * keep, m.direction * keep, m.confidence * keep,
+                                m.target)        # 가린 간선은 delta=0이라 target은 영향 없음
     return dropped
 
 

@@ -10,6 +10,8 @@ class EdgeMemory:
     strength: torch.Tensor      # M: 위험 기억 강도 [0, 1]  (강화에 사용)
     direction: torch.Tensor     # s: 보정 방향 [-1, 1]
     confidence: torch.Tensor    # C: 관측 신뢰도 [0, 1]     (완화에 사용)
+    target: Optional[torch.Tensor] = None   # 기억된 평균 관측 노출 [0, 1]. 보정은 이 값을
+                                            # 향해 끌어당기되 지나치지 않는다 (과도 보정 방지)
 
 
 @dataclass
