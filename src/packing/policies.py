@@ -13,7 +13,7 @@ from src.packing.safety import SafetyFilter
 class PolicyConfig:
     risk_weight: float = 1.0
     space_weight: float = 0.15
-    newbox_weight: float = 0.25
+    newbox_weight: float = 1.0
 
 
 def choose(env: PackingEnv, safety: SafetyFilter, item_index: int,
