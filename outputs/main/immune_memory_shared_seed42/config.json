@@ -15,7 +15,11 @@
     "heads": 4,
     "lambda_repulsion": 1.0,
     "initial_beta": 0.5,
-    "memory_gain": 0.3
+    "memory_gain": {
+      "odor": 0.0,
+      "contamination": 0.0,
+      "physical": 0.4
+    }
   },
   "train": {
     "max_epochs": 12,
