@@ -1,7 +1,7 @@
 """실험 설정: YAML 한 파일이 실험 하나를 정의한다."""
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
-from typing import Optional
+from typing import Dict, Optional
 
 import yaml
 
@@ -24,7 +24,12 @@ class ModelConfig:
     heads: int = 4
     lambda_repulsion: float = 1.0   # 메시지 증폭 m = a(1 + lambda*rho)Wh
     initial_beta: float = 0.5       # DCA 반응 계수 초기값 (관계별 학습)
-    memory_gain: float = 0.3        # aiNet 보정 계수 gamma (너무 크면 보정이 포화되어 과적합)
+    memory_gain: Dict[str, float] = field(default_factory=lambda: {
+        "odor": 0.0, "contamination": 0.0, "physical": 0.4})
+    # aiNet 보정 계수 gamma, 관계별. DCA가 이미 거의 완벽한 관계(냄새·오염)는
+    # 반발강도가 분류 정확도와 별개로 움직여도 되므로, 기억이 그걸 "틀렸다"고
+    # 보고 끌어당기면 오히려 해친다. 물리처럼 DCA가 실제로 부족한 관계에서만
+    # 보정을 켠다. 0으로 두면 그 관계는 aiNet 기억을 받지 않는다 (DCA 그대로).
 
 
 @dataclass

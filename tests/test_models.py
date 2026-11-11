@@ -52,7 +52,9 @@ def test_same_seed_gives_identical_initial_weights_for_control():
 def test_memory_only_changes_its_own_relation(sequences):
     """냄새 기억은 냄새 예측만 바꾸고, 오염·물리는 그대로 둔다."""
     g = _graph(sequences)
-    model = build_model("immune", ModelConfig()).eval()
+    cfg = ModelConfig()
+    cfg.memory_gain = {"odor": 0.5, "contamination": 0.5, "physical": 0.5}
+    model = build_model("immune", cfg).eval()
     e = g.edge_index.shape[1]
     memory = {"odor": EdgeMemory(torch.ones(e, 1), torch.ones(e, 1), torch.ones(e, 1))}
     base, changed = model(g.x, g.edge_index), model(g.x, g.edge_index, memory=memory)
@@ -63,14 +65,30 @@ def test_memory_only_changes_its_own_relation(sequences):
 
 def test_memory_strengthens_and_relaxes(sequences):
     g = _graph(sequences)
-    model = build_model("immune", ModelConfig()).eval()
+    cfg = ModelConfig()
+    cfg.memory_gain = {"odor": 0.5, "contamination": 0.5, "physical": 0.5}
+    model = build_model("immune", cfg).eval()
     e = g.edge_index.shape[1]
     ones, zeros = torch.ones(e, 1), torch.zeros(e, 1)
     up = model(g.x, g.edge_index, memory={"odor": EdgeMemory(ones, ones, zeros)})
     down = model(g.x, g.edge_index, memory={"odor": EdgeMemory(zeros, -ones, ones)})
     assert (up.memory_delta["odor"] >= 0).all() and up.memory_delta["odor"].max() > 0
     assert (down.memory_delta["odor"] <= 0).all() and down.memory_delta["odor"].min() < 0
-    assert up.memory_delta["odor"].max() <= model.memory_gain + 1e-6
+    assert up.memory_delta["odor"].max() <= model.memory_gain["odor"] + 1e-6
+
+
+def test_zero_gain_relation_ignores_memory(sequences):
+    """관계별 보정 세기를 0으로 두면 그 관계는 기억이 있어도 반발강도가 그대로다."""
+    g = _graph(sequences)
+    cfg = ModelConfig()
+    cfg.memory_gain = {"odor": 0.0, "contamination": 0.5, "physical": 0.5}
+    model = build_model("immune", cfg).eval()
+    e = g.edge_index.shape[1]
+    ones = torch.ones(e, 1)
+    base = model(g.x, g.edge_index)
+    with_memory = model(g.x, g.edge_index, memory={"odor": EdgeMemory(ones, ones, torch.zeros(e, 1))})
+    assert torch.equal(base.repulsion["odor"], with_memory.repulsion["odor"])
+    assert "odor" not in with_memory.memory_delta
 
 
 def test_prequential_lookup_happens_before_observation(sequences):

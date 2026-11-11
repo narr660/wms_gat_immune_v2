@@ -11,7 +11,10 @@ model:
   heads: 4
   lambda_repulsion: 1.0
   initial_beta: 0.5
-  memory_gain: 0.3
+  memory_gain:
+    odor: 0.0            # DCA가 이미 거의 완벽 (미탐지 0/5990) — 기억이 끼어들면 해친다
+    contamination: 0.0   # DCA가 이미 거의 완벽 (미탐지 8/61189) — 기억이 끼어들면 해친다
+    physical: 0.4        # DCA가 가장 부족한 관계 — 기억의 이득이 가장 크게 확인됨
 train:
   max_epochs: 12
   patience: 3

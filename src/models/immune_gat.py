@@ -38,7 +38,11 @@ class ImmuneGAT(RelationGAT):
         self.beta = nn.ParameterDict({
             r: nn.Parameter(torch.tensor(float(initial_beta)), requires_grad=train_beta)
             for r in RELATIONS})
-        self.memory_gain = float(memory_gain)
+        # 관계별 보정 세기. 스칼라를 주면 모든 관계에 같은 값을 쓴다.
+        if isinstance(memory_gain, dict):
+            self.memory_gain = {r: float(memory_gain.get(r, 0.0)) for r in RELATIONS}
+        else:
+            self.memory_gain = {r: float(memory_gain) for r in RELATIONS}
 
     def freeze_beta_at_zero(self):
         """통제 조건: DCA 보정을 끈다 (나머지 구조·초기값은 동일)."""
@@ -57,10 +61,11 @@ class ImmuneGAT(RelationGAT):
         out.dca_repulsion[relation] = rho
 
         # aiNet: 과거 경험으로 양방향 보정
-        if memory is not None and relation in memory:
+        gain = self.memory_gain[relation]
+        if memory is not None and relation in memory and gain > 0:
             m = memory[relation]
             direction = m.direction.clamp(-1.0, 1.0)
-            delta = self.memory_gain * (
+            delta = gain * (
                 m.strength.clamp(0, 1) * direction.clamp(min=0)
                 + m.confidence.clamp(0, 1) * direction.clamp(max=0))
             adjusted = (rho + delta).clamp(0.0, 1.0)
