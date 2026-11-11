@@ -24,7 +24,7 @@ class ModelConfig:
     heads: int = 4
     lambda_repulsion: float = 1.0   # 메시지 증폭 m = a(1 + lambda*rho)Wh
     initial_beta: float = 0.5       # DCA 반응 계수 초기값 (관계별 학습)
-    memory_gain: float = 1.0        # aiNet 보정 계수 gamma
+    memory_gain: float = 0.3        # aiNet 보정 계수 gamma (너무 크면 보정이 포화되어 과적합)
 
 
 @dataclass
@@ -37,6 +37,7 @@ class TrainConfig:
     class_weight_cap: float = 8.0   # w_c = min(cap, sqrt(N0/Nc))
     memory_epochs: int = 4          # 기억을 주입한 상태로 추가 학습하는 epoch 수
     memory_dropout: float = 0.3     # 그 중 기억을 가리는 간선 비율 (처음 보는 쌍 대비)
+    memory_lr_scale: float = 0.1    # 추가 학습 학습률 = lr * 이 값 (급격한 변화로 원래 가중치가 무너지는 것을 막음)
 
 
 @dataclass

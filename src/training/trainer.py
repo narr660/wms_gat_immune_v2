@@ -56,17 +56,29 @@ def finetune_with_memory(model, datasets, memories, weights, cfg: ExperimentConf
     """기억을 주입한 상태로 추가 학습한다. 모델이 보정된 반발강도를 쓰는 법을 배운다.
 
     memories: {"train": [...], "val": [...]} 그래프별 기억 (prequential 조회 결과)
+
+    안전장치
+      - 학습률을 본학습보다 낮춰(lr * memory_lr_scale), 이미 잘 맞춰진 2차 GAT·분류
+        헤드가 몇 epoch 만에 크게 흔들리지 않게 한다.
+      - 매 epoch마다 기억이 없는 조건(off)의 검증 손실도 함께 재서, 기억이 섞인
+        손실만 보고 "기억에만 맞는 지점"을 고르지 않게 한다.
+      - 추가 학습이 원래 체크포인트보다 나아지지 않으면(off 손실 기준) 원래
+        가중치를 그대로 쓴다. 즉 추가 학습이 성능을 깎는 일은 없다.
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     set_seed(seed)
     model.to(device)
     weights = {r: w.to(device) for r, w in weights.items()}
+    lr = cfg.train.lr * cfg.train.memory_lr_scale
     optimizer = torch.optim.Adam((p for p in model.parameters() if p.requires_grad),
-                                 lr=cfg.train.lr, weight_decay=cfg.train.weight_decay)
+                                 lr=lr, weight_decay=cfg.train.weight_decay)
     generator = torch.Generator().manual_seed(seed)
     train_graphs, val_graphs = datasets["train"], datasets["val"]
-    best_loss, history = float("inf"), []
+
+    baseline_off = mean_loss(model, val_graphs, weights, cfg.train.lambda_rep_loss, device)
+    best_off, history = baseline_off, []
     torch.save(model.state_dict(), out_dir / "best.pt")
+    log(f"memory epoch 00 (기준, 추가 학습 전) | val(off) {baseline_off:.4f}")
 
     for epoch in range(1, cfg.train.memory_epochs + 1):
         model.train()
@@ -82,17 +94,24 @@ def finetune_with_memory(model, datasets, memories, weights, cfg: ExperimentConf
             loss.backward()
             optimizer.step()
             losses.append(float(loss.detach()))
-        val_loss = mean_loss(model, val_graphs, weights, cfg.train.lambda_rep_loss,
-                             device, memories["val"])
+        val_on = mean_loss(model, val_graphs, weights, cfg.train.lambda_rep_loss,
+                           device, memories["val"])
+        val_off = mean_loss(model, val_graphs, weights, cfg.train.lambda_rep_loss, device)
         history.append({"epoch": epoch, "train_loss": float(np.mean(losses)),
-                        "val_loss": val_loss})
-        log(f"memory epoch {epoch:02d} | train {history[-1]['train_loss']:.4f} | val {val_loss:.4f}")
-        if val_loss < best_loss:
-            best_loss = val_loss
+                        "val_loss_on": val_on, "val_loss_off": val_off})
+        log(f"memory epoch {epoch:02d} | train {history[-1]['train_loss']:.4f} | "
+            f"val(on) {val_on:.4f} | val(off) {val_off:.4f}")
+        if val_off < best_off:          # off 기준으로만 체크포인트를 고른다
+            best_off = val_off
             torch.save(model.state_dict(), out_dir / "best.pt")
 
     model.load_state_dict(torch.load(out_dir / "best.pt", map_location=device))
-    return {"history": history, "best_val_loss": best_loss}
+    regressed = best_off >= baseline_off
+    if regressed:
+        log(f"추가 학습이 기존 체크포인트를 개선하지 못함 "
+            f"(off {baseline_off:.4f} -> {best_off:.4f}) — 원래 가중치를 그대로 사용")
+    return {"history": history, "baseline_off_loss": baseline_off,
+            "best_off_loss": best_off, "regressed": regressed}
 
 
 def train_model(model, datasets: Dict[str, Sequence], weights, cfg: ExperimentConfig,

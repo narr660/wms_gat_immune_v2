@@ -65,11 +65,16 @@ def main():
     val_mem, _ = prequential_pass(model, datasets["val"], memory, device,
                                   update=False, shared=args.shared)
     print(f"기억한 SKU 쌍: {memory.size()} | 학습 중 평균 기억 적용률 {np.mean(train_cov):.1%}")
+    if cfg.model.memory_gain >= 0.5:
+        print(f"주의: memory_gain={cfg.model.memory_gain} 은 보정 폭이 큽니다. "
+              "과적합으로 off 조건이 나빠지면 finetune 결과의 regressed 를 확인하세요.")
 
     # 2) 기억을 주입한 추가 학습
     info = finetune_with_memory(model, datasets, {"train": train_mem, "val": val_mem},
                                 weights, cfg, args.seed, out, device)
     memory.save(out / "ainet_memory.pkl")
+    if info["regressed"]:
+        print("기억 주입 추가 학습이 원래 체크포인트를 개선하지 못해 원래 가중치를 그대로 사용합니다.")
 
     # 3) 같은 체크포인트로 OFF / frozen / online 평가
     test = datasets["test"]
