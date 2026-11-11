@@ -1,0 +1,131 @@
+{
+  "model": "relation",
+  "seed": 44,
+  "best_epoch": 12,
+  "parameters": 29265,
+  "seconds": 420.00399923324585,
+  "val": {
+    "overall": {
+      "accuracy": 0.9842566404788626,
+      "macro_f1": 0.9766285982880696,
+      "low_f1": 0.9912883497946169,
+      "mid_f1": 0.9648551222805417,
+      "high_f1": 0.9971271048859442,
+      "high_recall": 0.9966890611381344,
+      "high_precision": 0.9975670386422703,
+      "high_total": 820179,
+      "high_missed": 7295,
+      "low_total": 6724297,
+      "low_overestimated": 51302
+    },
+    "relations": {
+      "odor": {
+        "accuracy": 0.9999679333012667,
+        "macro_f1": 0.9993058213580857,
+        "low_f1": 0.9999837363731137,
+        "mid_f1": 0.9988193116036027,
+        "high_f1": 0.9996009258520233,
+        "high_recall": 1.0,
+        "high_precision": 0.9992021700973353,
+        "high_total": 6262,
+        "high_missed": 0,
+        "low_total": 3074383,
+        "low_overestimated": 88
+      },
+      "contamination": {
+        "accuracy": 0.999345518678852,
+        "macro_f1": 0.9991476633964549,
+        "low_f1": 0.9997077160908083,
+        "mid_f1": 0.9987065939217139,
+        "high_f1": 0.9999108191263247,
+        "high_recall": 0.9998216541576874,
+        "high_precision": 1.0,
+        "high_total": 67285,
+        "high_missed": 12,
+        "low_total": 2202142,
+        "low_overestimated": 1159
+      },
+      "physical": {
+        "accuracy": 0.9534564694564694,
+        "macro_f1": 0.931432310109668,
+        "low_f1": 0.9741735969199289,
+        "mid_f1": 0.8970394613163086,
+        "high_f1": 0.9918695696794849,
+        "high_recall": 0.9902455292567155,
+        "high_precision": 0.9934989458294756,
+        "high_total": 746632,
+        "high_missed": 7283,
+        "low_total": 1447772,
+        "low_overestimated": 50055
+      }
+    },
+    "rho_error": {
+      "odor": 0.032555084031016104,
+      "contamination": 0.04298715633414094,
+      "physical": 0.06171922919059557,
+      "mean": 0.045753823185250876
+    }
+  },
+  "test": {
+    "overall": {
+      "accuracy": 0.9841391694725029,
+      "macro_f1": 0.9765778935172955,
+      "low_f1": 0.9912202320419407,
+      "mid_f1": 0.9648591163635666,
+      "high_f1": 0.9969592740785408,
+      "high_recall": 0.9966395496561673,
+      "high_precision": 0.9972806854026802,
+      "high_total": 818368,
+      "high_missed": 7573,
+      "low_total": 6734541,
+      "low_overestimated": 51569
+    },
+    "relations": {
+      "odor": {
+        "accuracy": 0.9999724226390893,
+        "macro_f1": 0.9993448808517623,
+        "low_f1": 0.9999860199699852,
+        "mid_f1": 0.9989470437258741,
+        "high_f1": 0.9994994159853162,
+        "high_recall": 1.0,
+        "high_precision": 0.9989993328885924,
+        "high_total": 5990,
+        "high_missed": 0,
+        "low_total": 3075859,
+        "low_overestimated": 86
+      },
+      "contamination": {
+        "accuracy": 0.9994862914862915,
+        "macro_f1": 0.9992940912490189,
+        "low_f1": 0.9997770169001389,
+        "mid_f1": 0.9989114315641706,
+        "high_f1": 0.9999591446524436,
+        "high_recall": 1.0,
+        "high_precision": 0.9999182926430695,
+        "high_total": 61189,
+        "high_missed": 0,
+        "low_total": 2222522,
+        "low_overestimated": 876
+      },
+      "physical": {
+        "accuracy": 0.9529587942921276,
+        "macro_f1": 0.9310947084511053,
+        "low_f1": 0.973897659255698,
+        "mid_f1": 0.8967188738006553,
+        "high_f1": 0.9914192615978625,
+        "high_recall": 0.9899186489685019,
+        "high_precision": 0.9929244306763785,
+        "high_total": 751189,
+        "high_missed": 7573,
+        "low_total": 1436160,
+        "low_overestimated": 50607
+      }
+    },
+    "rho_error": {
+      "odor": 0.032576157711446285,
+      "contamination": 0.042332413236773205,
+      "physical": 0.062130971323876155,
+      "mean": 0.04567984742403188
+    }
+  }
+}
