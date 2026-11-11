@@ -19,6 +19,9 @@
       "odor": 0.0,
       "contamination": 0.0,
       "physical": 0.4
+    },
+    "memory_gain_relax": {
+      "physical": 0.15
     }
   },
   "train": {
