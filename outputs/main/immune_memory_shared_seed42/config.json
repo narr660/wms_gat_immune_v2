@@ -15,7 +15,7 @@
     "heads": 4,
     "lambda_repulsion": 1.0,
     "initial_beta": 0.5,
-    "memory_gain": 1.0
+    "memory_gain": 0.3
   },
   "train": {
     "max_epochs": 12,
@@ -25,7 +25,8 @@
     "lambda_rep_loss": 0.5,
     "class_weight_cap": 8.0,
     "memory_epochs": 4,
-    "memory_dropout": 0.3
+    "memory_dropout": 0.3,
+    "memory_lr_scale": 0.1
   },
   "ainet": {
     "clone_count": 5,
