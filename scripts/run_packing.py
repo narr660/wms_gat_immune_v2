@@ -39,6 +39,8 @@ CONDITIONS = {
     "filter":      dict(forbidden=True,  mask=True,  risk_cost=False, memory=False),
     "risk":        dict(forbidden=True,  mask=True,  risk_cost=True,  memory=False),
     "risk_memory": dict(forbidden=True,  mask=True,  risk_cost=True,  memory=True),
+    # 2단계: risk_memory와 같은 안전 설정에서 탐욕 대신 PPO 정책이 고른다
+    "ppo":         dict(forbidden=True,  mask=True,  risk_cost=True,  memory=True, ppo=True),
 }
 
 
@@ -118,7 +120,9 @@ def main():
     parser.add_argument("--newbox-weight", type=float, default=None,
                         help="새 박스 비용 (기본: 스윕 균형점 1.0)")
     parser.add_argument("--conditions", default=None,
-                        help="쉼표로 조건 선택 (예: space,risk). 기본: 전부")
+                        help="쉼표로 조건 선택 (예: space,risk). 기본: ppo 제외 전부")
+    parser.add_argument("--ppo-path", default=None,
+                        help="PPO 가중치 (기본: outputs/<exp>/ppo_seed<S>/best.pt)")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -155,10 +159,21 @@ def main():
     if args.newbox_weight is not None:
         policy.newbox_weight = args.newbox_weight
     selected = {k: v for k, v in CONDITIONS.items()
-                if args.conditions is None or k in args.conditions.split(",")}
+                if (k != "ppo" if args.conditions is None else k in args.conditions.split(","))}
     assert selected, f"--conditions 가 비었습니다: {args.conditions}"
     rotation = not args.no_rotation
     print(f"회전: {'켜짐 (축 정렬)' if rotation else '꺼짐'} | 새 박스 비용: {policy.newbox_weight} | 조건: {list(selected)}")
+    ppo_net = None
+    if any(f.get("ppo") for f in selected.values()):
+        from src.packing.ppo import PolicyNet
+        ppo_path = Path(args.ppo_path) if args.ppo_path else \
+            Path("outputs") / cfg.experiment / f"ppo_seed{args.seed}" / "best.pt"
+        assert ppo_path.exists(), f"먼저 PPO를 학습하세요: {ppo_path}"
+        assert rotation, "ppo 조건은 회전 켠 상태를 전제합니다."
+        ppo_net = PolicyNet().to(device)
+        ppo_net.load_state_dict(torch.load(ppo_path, map_location=device))
+        ppo_net.eval()
+        print(f"PPO 정책 불러옴: {ppo_path}")
     results = {name: [] for name in selected}
     for name, flags in selected.items():
         memory = copy.deepcopy(base_memory) if flags["memory"] and base_memory else None
@@ -174,7 +189,12 @@ def main():
                                   thresholds, use_forbidden=flags["forbidden"],
                                   use_mask=flags["mask"])
             local_policy = policy if flags["risk_cost"] else PolicyConfig(risk_weight=0.0)
-            env = pack_sequence(items, safety, local_policy, allow_rotation=rotation)
+            if flags.get("ppo"):
+                from src.packing.ppo import rollout
+                env = PackingEnv(items)
+                rollout(env, safety, ppo_net, local_policy, device, greedy=True)
+            else:
+                env = pack_sequence(items, safety, local_policy, allow_rotation=rotation)
             exposure, high_pairs, forbidden = evaluate_boxes(env, items)
             results[name].append(dict(
                 sequence=sid, exposure=exposure, high_colocated=high_pairs,
