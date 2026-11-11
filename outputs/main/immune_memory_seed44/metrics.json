@@ -1,0 +1,67 @@
+{
+  "model": "immune_memory",
+  "seed": 44,
+  "test": {
+    "overall": {
+      "accuracy": 0.98886430441986,
+      "macro_f1": 0.9796423334305729,
+      "low_f1": 0.9966692120298816,
+      "mid_f1": 0.9683154586186048,
+      "high_f1": 0.9965921371608646,
+      "high_recall": 0.9979113496888221,
+      "high_precision": 0.9952845195741281,
+      "high_total": 818368,
+      "high_missed": 4425,
+      "low_total": 6734541,
+      "low_overestimated": 27627
+    },
+    "relations": {
+      "odor": {
+        "accuracy": 0.9999993586660253,
+        "macro_f1": 0.9999880111248186,
+        "low_f1": 0.9999996748874623,
+        "mid_f1": 0.9999761848059061,
+        "high_f1": 1.0,
+        "high_recall": 1.0,
+        "high_precision": 1.0,
+        "high_total": 5990,
+        "high_missed": 0,
+        "low_total": 3075859,
+        "low_overestimated": 2
+      },
+      "contamination": {
+        "accuracy": 0.9999297739297739,
+        "macro_f1": 0.9998501537999358,
+        "low_f1": 0.9999815521482522,
+        "mid_f1": 0.9998245145587566,
+        "high_f1": 0.9997956731751572,
+        "high_recall": 0.9995914298321594,
+        "high_precision": 1.0,
+        "high_total": 61189,
+        "high_missed": 25,
+        "low_total": 2222522,
+        "low_overestimated": 82
+      },
+      "physical": {
+        "accuracy": 0.9666637806637807,
+        "macro_f1": 0.9390888353669645,
+        "low_f1": 0.9900264090539302,
+        "mid_f1": 0.9051456764911517,
+        "high_f1": 0.9899807383074367,
+        "high_recall": 0.9941426192343072,
+        "high_precision": 0.9858535587223847,
+        "high_total": 751189,
+        "high_missed": 4400,
+        "low_total": 1436160,
+        "low_overestimated": 27543
+      }
+    },
+    "rho_error": {
+      "odor": 0.24935522812699515,
+      "contamination": 0.04310000278646984,
+      "physical": 0.03651018115499663,
+      "mean": 0.10965513735615388
+    },
+    "memory_coverage": 1.0
+  }
+}
