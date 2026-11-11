@@ -65,8 +65,10 @@ def main():
     val_mem, _ = prequential_pass(model, datasets["val"], memory, device,
                                   update=False, shared=args.shared)
     print(f"기억한 SKU 쌍: {memory.size()} | 학습 중 평균 기억 적용률 {np.mean(train_cov):.1%}")
-    active = {r: g for r, g in cfg.model.memory_gain.items() if g > 0}
-    print(f"관계별 보정 세기: {cfg.model.memory_gain} | 기억이 적용되는 관계: {list(active) or '없음'}")
+    relax = {r: cfg.model.memory_gain_relax.get(r, g) for r, g in cfg.model.memory_gain.items()}
+    active = {r: g for r, g in cfg.model.memory_gain.items() if g > 0 or relax.get(r, 0) > 0}
+    print(f"강화 세기(gamma_up): {cfg.model.memory_gain} | 완화 세기(gamma_down): {relax} | "
+          f"기억이 적용되는 관계: {list(active) or '없음'}")
     if any(g >= 0.5 for g in cfg.model.memory_gain.values()):
         print("주의: 보정 세기가 큰 관계가 있습니다. 과적합으로 off 조건이 나빠지면 "
               "finetune 결과의 regressed 를 확인하세요.")

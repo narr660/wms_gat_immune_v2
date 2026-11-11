@@ -11,10 +11,14 @@ model:
   heads: 4
   lambda_repulsion: 1.0
   initial_beta: 0.5
-  memory_gain:
+  memory_gain:          # 강화(+ 방향) 세기
     odor: 0.0            # DCA가 이미 거의 완벽 (미탐지 0/5990) — 기억이 끼어들면 해친다
     contamination: 0.0   # DCA가 이미 거의 완벽 (미탐지 8/61189) — 기억이 끼어들면 해친다
-    physical: 0.4        # DCA가 가장 부족한 관계 — 기억의 이득이 가장 크게 확인됨
+    physical: 0.4        # DCA가 가장 부족한 관계 — 양끝 등급(0·4)에서 이득이 크게 확인됨
+  memory_gain_relax:    # 완화(- 방향) 세기. 없는 관계는 memory_gain과 같은 값을 쓴다
+    physical: 0.15        # 세 시드 모두 등급별 상세표에서 중간 등급(2·3) 미탐지가 크게
+                          # 늘어난 것을 확인 — 완화가 친화도 검증 없이 걸려 과도했다.
+                          # 강화는 그대로 두고 완화만 낮춘다 (시드 44 결과 반영)
 train:
   max_epochs: 12
   patience: 3

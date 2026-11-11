@@ -26,10 +26,16 @@ class ModelConfig:
     initial_beta: float = 0.5       # DCA 반응 계수 초기값 (관계별 학습)
     memory_gain: Dict[str, float] = field(default_factory=lambda: {
         "odor": 0.0, "contamination": 0.0, "physical": 0.4})
-    # aiNet 보정 계수 gamma, 관계별. DCA가 이미 거의 완벽한 관계(냄새·오염)는
+    # aiNet 강화(+ 방향) 계수 gamma_up, 관계별. DCA가 이미 거의 완벽한 관계(냄새·오염)는
     # 반발강도가 분류 정확도와 별개로 움직여도 되므로, 기억이 그걸 "틀렸다"고
     # 보고 끌어당기면 오히려 해친다. 물리처럼 DCA가 실제로 부족한 관계에서만
     # 보정을 켠다. 0으로 두면 그 관계는 aiNet 기억을 받지 않는다 (DCA 그대로).
+    memory_gain_relax: Dict[str, float] = field(default_factory=lambda: {"physical": 0.15})
+    # aiNet 완화(- 방향) 계수 gamma_down, 관계별. 완화는 신뢰도(C, 관측 횟수)만으로
+    # 세기가 걸리고 강화처럼 클론 친화도의 검증을 받지 않는다 — 그래서 과도하게
+    # 걸리면 중간 등급(실제로는 등급 2·3인데 예측이 아래로 끌려 더 낮은 등급으로
+    # 보이는 경우)을 해칠 수 있다. 여기 없는 관계는 memory_gain과 같은 값을 쓴다
+    # (기존과 같은 대칭 동작).
 
 
 @dataclass

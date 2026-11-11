@@ -74,7 +74,7 @@ def test_memory_strengthens_and_relaxes(sequences):
     down = model(g.x, g.edge_index, memory={"odor": EdgeMemory(zeros, -ones, ones)})
     assert (up.memory_delta["odor"] >= 0).all() and up.memory_delta["odor"].max() > 0
     assert (down.memory_delta["odor"] <= 0).all() and down.memory_delta["odor"].min() < 0
-    assert up.memory_delta["odor"].max() <= model.memory_gain["odor"] + 1e-6
+    assert up.memory_delta["odor"].max() <= model.memory_gain_up["odor"] + 1e-6
 
 
 def test_zero_gain_relation_ignores_memory(sequences):
@@ -82,6 +82,7 @@ def test_zero_gain_relation_ignores_memory(sequences):
     g = _graph(sequences)
     cfg = ModelConfig()
     cfg.memory_gain = {"odor": 0.0, "contamination": 0.5, "physical": 0.5}
+    cfg.memory_gain_relax = {}
     model = build_model("immune", cfg).eval()
     e = g.edge_index.shape[1]
     ones = torch.ones(e, 1)
@@ -89,6 +90,35 @@ def test_zero_gain_relation_ignores_memory(sequences):
     with_memory = model(g.x, g.edge_index, memory={"odor": EdgeMemory(ones, ones, torch.zeros(e, 1))})
     assert torch.equal(base.repulsion["odor"], with_memory.repulsion["odor"])
     assert "odor" not in with_memory.memory_delta
+
+
+def test_relax_gain_defaults_to_reinforce_gain_when_unset(sequences):
+    """memory_gain_relax 에 없는 관계는 memory_gain 과 같은 값을 써서 기존과 같은 대칭 동작이 된다."""
+    g = _graph(sequences)
+    cfg = ModelConfig()
+    cfg.memory_gain = {"odor": 0.5, "contamination": 0.0, "physical": 0.0}
+    cfg.memory_gain_relax = {}
+    model = build_model("immune", cfg).eval()
+    assert model.memory_gain_down["odor"] == model.memory_gain_up["odor"] == 0.5
+
+
+def test_reinforce_and_relax_gain_apply_independently(sequences):
+    """강화(+ 방향)와 완화(- 방향) 세기를 다르게 주면, 그 방향의 보정 크기만 달라진다."""
+    g = _graph(sequences)
+    cfg = ModelConfig()
+    cfg.memory_gain = {"odor": 0.6, "contamination": 0.0, "physical": 0.0}      # 강화
+    cfg.memory_gain_relax = {"odor": 0.1}                                       # 완화만 약하게
+    model = build_model("immune", cfg).eval()
+    e = g.edge_index.shape[1]
+    ones, zeros = torch.ones(e, 1), torch.zeros(e, 1)
+
+    up = model(g.x, g.edge_index, memory={"odor": EdgeMemory(ones, ones, zeros)})      # + 방향
+    down = model(g.x, g.edge_index, memory={"odor": EdgeMemory(zeros, -ones, ones)})   # - 방향
+
+    # 두 보정 모두 올바른 부호이고, 강화(0.6)가 완화(0.1)보다 또렷하게 크다
+    # (rho가 이미 1에 가까운 소수 간선에서는 클리핑으로 둘 다 눌릴 수 있어 median으로 비교한다)
+    assert up.memory_delta["odor"].min() > 0 and down.memory_delta["odor"].max() < 0
+    assert up.memory_delta["odor"].median() > -down.memory_delta["odor"].median() * 3
 
 
 def test_prequential_lookup_happens_before_observation(sequences):

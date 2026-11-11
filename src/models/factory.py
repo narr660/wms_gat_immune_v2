@@ -18,7 +18,8 @@ def build_model(name: str, cfg: ModelConfig):
     if name in ("immune", "immune_beta0"):
         model = ImmuneGAT(lambda_repulsion=cfg.lambda_repulsion,
                           initial_beta=cfg.initial_beta,
-                          memory_gain=cfg.memory_gain, **common)
+                          memory_gain=cfg.memory_gain,
+                          memory_gain_relax=cfg.memory_gain_relax, **common)
         if name == "immune_beta0":
             model.freeze_beta_at_zero()
         return model
