@@ -1,0 +1,9 @@
+{
+  "seed": 43,
+  "target_recall": 0.99,
+  "thresholds": {
+    "odor": 0.9917196035385132,
+    "contamination": 0.995624840259552,
+    "physical": 0.48228952288627625
+  }
+}

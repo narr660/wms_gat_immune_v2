@@ -3,7 +3,7 @@
   "target_recall": 0.99,
   "thresholds": {
     "odor": 0.9919853210449219,
-    "contamination": 0.9518263339996338,
-    "physical": 0.5927394032478333
+    "contamination": 0.9518270492553711,
+    "physical": 0.592738687992096
   }
 }
