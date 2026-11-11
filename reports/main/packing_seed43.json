@@ -26,21 +26,30 @@
       "oversized": 0
     },
     "risk": {
-      "exposure_mean": 141.87698412698413,
-      "exposure_index": 48.508724958482716,
-      "high_colocated": 125,
+      "exposure_mean": 141.8862433862434,
+      "exposure_index": 48.51189076344743,
+      "high_colocated": 126,
       "forbidden": 0,
       "boxes_mean": 10.012698412698413,
       "utilization_mean": 0.43727504382302007,
       "oversized": 0
     },
     "risk_memory": {
-      "exposure_mean": 141.92328042328043,
-      "exposure_index": 48.52455398330625,
+      "exposure_mean": 141.91587301587302,
+      "exposure_index": 48.522021339334486,
       "high_colocated": 64,
       "forbidden": 0,
-      "boxes_mean": 10.025396825396825,
-      "utilization_mean": 0.43721049765049774,
+      "boxes_mean": 10.028571428571428,
+      "utilization_mean": 0.4371252310652311,
+      "oversized": 0
+    },
+    "ppo": {
+      "exposure_mean": 97.40158730158728,
+      "exposure_index": 33.30227829415573,
+      "high_colocated": 10,
+      "forbidden": 0,
+      "boxes_mean": 13.301587301587302,
+      "utilization_mean": 0.33090463273494897,
       "oversized": 0
     }
   },
@@ -6046,7 +6055,7 @@
       },
       {
         "sequence": 1315,
-        "exposure": 138.16666666666666,
+        "exposure": 137.66666666666666,
         "high_colocated": 1,
         "forbidden": 0,
         "boxes": 11,
@@ -6739,7 +6748,7 @@
       },
       {
         "sequence": 207,
-        "exposure": 134.33333333333331,
+        "exposure": 134.83333333333331,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 12,
@@ -7135,7 +7144,7 @@
       },
       {
         "sequence": 1410,
-        "exposure": 120.00000000000001,
+        "exposure": 119.75000000000001,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 10,
@@ -7324,7 +7333,7 @@
       },
       {
         "sequence": 450,
-        "exposure": 133.91666666666669,
+        "exposure": 132.66666666666669,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 11,
@@ -7360,7 +7369,7 @@
       },
       {
         "sequence": 1564,
-        "exposure": 198.33333333333337,
+        "exposure": 202.66666666666666,
         "high_colocated": 2,
         "forbidden": 0,
         "boxes": 11,
@@ -7873,7 +7882,7 @@
       },
       {
         "sequence": 718,
-        "exposure": 165.16666666666669,
+        "exposure": 169.16666666666669,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 8,
@@ -7945,7 +7954,7 @@
       },
       {
         "sequence": 1508,
-        "exposure": 121.16666666666667,
+        "exposure": 120.41666666666666,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 11,
@@ -8008,7 +8017,7 @@
       },
       {
         "sequence": 2007,
-        "exposure": 127.58333333333333,
+        "exposure": 126.58333333333333,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 10,
@@ -8224,8 +8233,8 @@
       },
       {
         "sequence": 555,
-        "exposure": 176.25,
-        "high_colocated": 1,
+        "exposure": 177.0,
+        "high_colocated": 2,
         "forbidden": 0,
         "boxes": 8,
         "utilization": 0.5245,
@@ -8287,7 +8296,7 @@
       },
       {
         "sequence": 1039,
-        "exposure": 114.50000000000001,
+        "exposure": 111.58333333333333,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 12,
@@ -8604,7 +8613,7 @@
       },
       {
         "sequence": 1706,
-        "exposure": 112.58333333333334,
+        "exposure": 113.16666666666667,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 10,
@@ -9882,7 +9891,7 @@
       },
       {
         "sequence": 1977,
-        "exposure": 133.33333333333331,
+        "exposure": 132.83333333333331,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 11,
@@ -10287,7 +10296,7 @@
       },
       {
         "sequence": 1408,
-        "exposure": 137.83333333333331,
+        "exposure": 136.83333333333331,
         "high_colocated": 0,
         "forbidden": 0,
         "boxes": 10,
@@ -10935,11 +10944,11 @@
       },
       {
         "sequence": 689,
-        "exposure": 112.50000000000001,
+        "exposure": 111.08333333333333,
         "high_colocated": 0,
         "forbidden": 0,
-        "boxes": 12,
-        "utilization": 0.3491666666666667,
+        "boxes": 13,
+        "utilization": 0.3223076923076923,
         "oversized": 0
       },
       {
@@ -11390,6 +11399,2843 @@
         "forbidden": 0,
         "boxes": 8,
         "utilization": 0.508875,
+        "oversized": 0
+      }
+    ],
+    "ppo": [
+      {
+        "sequence": 89,
+        "exposure": 102.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3801818181818182,
+        "oversized": 0
+      },
+      {
+        "sequence": 661,
+        "exposure": 81.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3169230769230769,
+        "oversized": 0
+      },
+      {
+        "sequence": 1172,
+        "exposure": 105.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.31223076923076926,
+        "oversized": 0
+      },
+      {
+        "sequence": 1509,
+        "exposure": 72.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.373,
+        "oversized": 0
+      },
+      {
+        "sequence": 1220,
+        "exposure": 99.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2786666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1706,
+        "exposure": 105.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.37275,
+        "oversized": 0
+      },
+      {
+        "sequence": 2052,
+        "exposure": 106.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33415384615384613,
+        "oversized": 0
+      },
+      {
+        "sequence": 1158,
+        "exposure": 85.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3606923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 524,
+        "exposure": 99.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.39,
+        "oversized": 0
+      },
+      {
+        "sequence": 109,
+        "exposure": 114.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3336923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 1091,
+        "exposure": 93.58333333333331,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3005,
+        "oversized": 0
+      },
+      {
+        "sequence": 494,
+        "exposure": 97.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3202857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 852,
+        "exposure": 83.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.25488235294117645,
+        "oversized": 0
+      },
+      {
+        "sequence": 1997,
+        "exposure": 100.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.2735,
+        "oversized": 0
+      },
+      {
+        "sequence": 497,
+        "exposure": 67.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.35584615384615387,
+        "oversized": 0
+      },
+      {
+        "sequence": 1765,
+        "exposure": 69.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.34015384615384614,
+        "oversized": 0
+      },
+      {
+        "sequence": 1737,
+        "exposure": 70.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.2963076923076923,
+        "oversized": 0
+      },
+      {
+        "sequence": 1201,
+        "exposure": 104.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.32384615384615384,
+        "oversized": 0
+      },
+      {
+        "sequence": 834,
+        "exposure": 119.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.423,
+        "oversized": 0
+      },
+      {
+        "sequence": 798,
+        "exposure": 68.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.2726470588235294,
+        "oversized": 0
+      },
+      {
+        "sequence": 519,
+        "exposure": 88.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.3829,
+        "oversized": 0
+      },
+      {
+        "sequence": 600,
+        "exposure": 92.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3926363636363636,
+        "oversized": 0
+      },
+      {
+        "sequence": 1649,
+        "exposure": 93.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.31076923076923074,
+        "oversized": 0
+      },
+      {
+        "sequence": 2073,
+        "exposure": 79.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2755625,
+        "oversized": 0
+      },
+      {
+        "sequence": 1561,
+        "exposure": 113.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3295,
+        "oversized": 0
+      },
+      {
+        "sequence": 604,
+        "exposure": 99.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.27853333333333335,
+        "oversized": 0
+      },
+      {
+        "sequence": 816,
+        "exposure": 88.75000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.30766666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 358,
+        "exposure": 115.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3710909090909091,
+        "oversized": 0
+      },
+      {
+        "sequence": 1831,
+        "exposure": 72.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.26576470588235296,
+        "oversized": 0
+      },
+      {
+        "sequence": 1513,
+        "exposure": 107.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.28726666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1921,
+        "exposure": 88.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2755,
+        "oversized": 0
+      },
+      {
+        "sequence": 1257,
+        "exposure": 101.66666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.30766666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 1133,
+        "exposure": 102.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.2965714285714286,
+        "oversized": 0
+      },
+      {
+        "sequence": 1320,
+        "exposure": 105.25000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3730833333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 867,
+        "exposure": 153.91666666666669,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.38675,
+        "oversized": 0
+      },
+      {
+        "sequence": 1436,
+        "exposure": 100.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.4060909090909091,
+        "oversized": 0
+      },
+      {
+        "sequence": 1315,
+        "exposure": 92.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2778,
+        "oversized": 0
+      },
+      {
+        "sequence": 181,
+        "exposure": 71.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.29957142857142854,
+        "oversized": 0
+      },
+      {
+        "sequence": 587,
+        "exposure": 98.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.29373333333333335,
+        "oversized": 0
+      },
+      {
+        "sequence": 1786,
+        "exposure": 122.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.2935384615384615,
+        "oversized": 0
+      },
+      {
+        "sequence": 122,
+        "exposure": 112.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3679090909090909,
+        "oversized": 0
+      },
+      {
+        "sequence": 948,
+        "exposure": 89.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.4066666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1429,
+        "exposure": 100.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33915384615384614,
+        "oversized": 0
+      },
+      {
+        "sequence": 391,
+        "exposure": 85.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.24575,
+        "oversized": 0
+      },
+      {
+        "sequence": 165,
+        "exposure": 90.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4325,
+        "oversized": 0
+      },
+      {
+        "sequence": 449,
+        "exposure": 85.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4309,
+        "oversized": 0
+      },
+      {
+        "sequence": 1980,
+        "exposure": 84.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.272,
+        "oversized": 0
+      },
+      {
+        "sequence": 838,
+        "exposure": 89.83333333333334,
+        "high_colocated": 1,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3370714285714286,
+        "oversized": 0
+      },
+      {
+        "sequence": 1233,
+        "exposure": 93.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.36566666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 401,
+        "exposure": 78.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3201428571428571,
+        "oversized": 0
+      },
+      {
+        "sequence": 1673,
+        "exposure": 80.66666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.346,
+        "oversized": 0
+      },
+      {
+        "sequence": 1497,
+        "exposure": 97.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4122,
+        "oversized": 0
+      },
+      {
+        "sequence": 149,
+        "exposure": 123.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.43,
+        "oversized": 0
+      },
+      {
+        "sequence": 894,
+        "exposure": 94.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.32576923076923076,
+        "oversized": 0
+      },
+      {
+        "sequence": 287,
+        "exposure": 132.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.2401764705882353,
+        "oversized": 0
+      },
+      {
+        "sequence": 1094,
+        "exposure": 126.58333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 9,
+        "utilization": 0.45255555555555554,
+        "oversized": 0
+      },
+      {
+        "sequence": 1279,
+        "exposure": 86.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3775,
+        "oversized": 0
+      },
+      {
+        "sequence": 37,
+        "exposure": 89.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.37563636363636366,
+        "oversized": 0
+      },
+      {
+        "sequence": 428,
+        "exposure": 116.83333333333331,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 9,
+        "utilization": 0.4678888888888889,
+        "oversized": 0
+      },
+      {
+        "sequence": 1742,
+        "exposure": 70.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.34076923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 1018,
+        "exposure": 105.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3428333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 566,
+        "exposure": 79.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2874,
+        "oversized": 0
+      },
+      {
+        "sequence": 769,
+        "exposure": 91.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.2748235294117647,
+        "oversized": 0
+      },
+      {
+        "sequence": 1342,
+        "exposure": 60.916666666666664,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.2674705882352941,
+        "oversized": 0
+      },
+      {
+        "sequence": 1705,
+        "exposure": 106.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 18,
+        "utilization": 0.24288888888888888,
+        "oversized": 0
+      },
+      {
+        "sequence": 949,
+        "exposure": 104.24999999999999,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3246428571428571,
+        "oversized": 0
+      },
+      {
+        "sequence": 13,
+        "exposure": 79.58333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.31935714285714284,
+        "oversized": 0
+      },
+      {
+        "sequence": 1346,
+        "exposure": 97.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 9,
+        "utilization": 0.493,
+        "oversized": 0
+      },
+      {
+        "sequence": 727,
+        "exposure": 132.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3636666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1579,
+        "exposure": 110.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2848,
+        "oversized": 0
+      },
+      {
+        "sequence": 1559,
+        "exposure": 69.58333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3166923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 1182,
+        "exposure": 105.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 19,
+        "utilization": 0.2326315789473684,
+        "oversized": 0
+      },
+      {
+        "sequence": 2099,
+        "exposure": 99.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2936,
+        "oversized": 0
+      },
+      {
+        "sequence": 799,
+        "exposure": 63.833333333333336,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.35733333333333334,
+        "oversized": 0
+      },
+      {
+        "sequence": 95,
+        "exposure": 69.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2660625,
+        "oversized": 0
+      },
+      {
+        "sequence": 846,
+        "exposure": 107.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3992727272727273,
+        "oversized": 0
+      },
+      {
+        "sequence": 348,
+        "exposure": 61.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3800909090909091,
+        "oversized": 0
+      },
+      {
+        "sequence": 487,
+        "exposure": 75.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2941875,
+        "oversized": 0
+      },
+      {
+        "sequence": 1199,
+        "exposure": 96.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.34276923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 1365,
+        "exposure": 69.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 18,
+        "utilization": 0.24738888888888888,
+        "oversized": 0
+      },
+      {
+        "sequence": 1117,
+        "exposure": 76.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.30792857142857144,
+        "oversized": 0
+      },
+      {
+        "sequence": 1210,
+        "exposure": 82.49999999999999,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2889333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 500,
+        "exposure": 100.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.32284615384615384,
+        "oversized": 0
+      },
+      {
+        "sequence": 1008,
+        "exposure": 77.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.35818181818181816,
+        "oversized": 0
+      },
+      {
+        "sequence": 1287,
+        "exposure": 91.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 18,
+        "utilization": 0.22727777777777777,
+        "oversized": 0
+      },
+      {
+        "sequence": 411,
+        "exposure": 88.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.33171428571428574,
+        "oversized": 0
+      },
+      {
+        "sequence": 1281,
+        "exposure": 70.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 18,
+        "utilization": 0.25316666666666665,
+        "oversized": 0
+      },
+      {
+        "sequence": 1056,
+        "exposure": 78.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3330769230769231,
+        "oversized": 0
+      },
+      {
+        "sequence": 316,
+        "exposure": 97.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3169166666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 251,
+        "exposure": 98.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3355,
+        "oversized": 0
+      },
+      {
+        "sequence": 1007,
+        "exposure": 110.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.2553529411764706,
+        "oversized": 0
+      },
+      {
+        "sequence": 1236,
+        "exposure": 114.24999999999999,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3087142857142857,
+        "oversized": 0
+      },
+      {
+        "sequence": 1893,
+        "exposure": 78.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.40391666666666665,
+        "oversized": 0
+      },
+      {
+        "sequence": 1624,
+        "exposure": 95.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.316,
+        "oversized": 0
+      },
+      {
+        "sequence": 1530,
+        "exposure": 98.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3167142857142857,
+        "oversized": 0
+      },
+      {
+        "sequence": 1102,
+        "exposure": 106.58333333333331,
+        "high_colocated": 2,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.30430769230769233,
+        "oversized": 0
+      },
+      {
+        "sequence": 1264,
+        "exposure": 100.58333333333331,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.4249090909090909,
+        "oversized": 0
+      },
+      {
+        "sequence": 844,
+        "exposure": 104.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.3146,
+        "oversized": 0
+      },
+      {
+        "sequence": 760,
+        "exposure": 151.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.39654545454545453,
+        "oversized": 0
+      },
+      {
+        "sequence": 376,
+        "exposure": 102.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.306,
+        "oversized": 0
+      },
+      {
+        "sequence": 1873,
+        "exposure": 117.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3038571428571429,
+        "oversized": 0
+      },
+      {
+        "sequence": 1238,
+        "exposure": 83.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.2844285714285714,
+        "oversized": 0
+      },
+      {
+        "sequence": 1573,
+        "exposure": 116.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.253625,
+        "oversized": 0
+      },
+      {
+        "sequence": 1442,
+        "exposure": 78.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.439,
+        "oversized": 0
+      },
+      {
+        "sequence": 1087,
+        "exposure": 100.75000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.3224,
+        "oversized": 0
+      },
+      {
+        "sequence": 270,
+        "exposure": 124.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33976923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 1037,
+        "exposure": 111.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.343,
+        "oversized": 0
+      },
+      {
+        "sequence": 986,
+        "exposure": 118.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.303,
+        "oversized": 0
+      },
+      {
+        "sequence": 788,
+        "exposure": 85.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.36125,
+        "oversized": 0
+      },
+      {
+        "sequence": 1516,
+        "exposure": 119.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.35854545454545456,
+        "oversized": 0
+      },
+      {
+        "sequence": 161,
+        "exposure": 68.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.38536363636363635,
+        "oversized": 0
+      },
+      {
+        "sequence": 392,
+        "exposure": 94.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3513076923076923,
+        "oversized": 0
+      },
+      {
+        "sequence": 1240,
+        "exposure": 108.58333333333333,
+        "high_colocated": 1,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3861818181818182,
+        "oversized": 0
+      },
+      {
+        "sequence": 207,
+        "exposure": 67.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.273625,
+        "oversized": 0
+      },
+      {
+        "sequence": 1630,
+        "exposure": 94.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.35063636363636363,
+        "oversized": 0
+      },
+      {
+        "sequence": 1709,
+        "exposure": 68.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3744166666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1136,
+        "exposure": 114.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.31123076923076926,
+        "oversized": 0
+      },
+      {
+        "sequence": 507,
+        "exposure": 79.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.32916666666666666,
+        "oversized": 0
+      },
+      {
+        "sequence": 1042,
+        "exposure": 101.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2888,
+        "oversized": 0
+      },
+      {
+        "sequence": 665,
+        "exposure": 89.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.29833333333333334,
+        "oversized": 0
+      },
+      {
+        "sequence": 523,
+        "exposure": 113.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.25466666666666665,
+        "oversized": 0
+      },
+      {
+        "sequence": 1181,
+        "exposure": 83.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4476,
+        "oversized": 0
+      },
+      {
+        "sequence": 893,
+        "exposure": 99.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4271,
+        "oversized": 0
+      },
+      {
+        "sequence": 205,
+        "exposure": 109.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3893333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 335,
+        "exposure": 101.75000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3067857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 458,
+        "exposure": 98.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.336,
+        "oversized": 0
+      },
+      {
+        "sequence": 1247,
+        "exposure": 73.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3066923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 76,
+        "exposure": 74.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.35725,
+        "oversized": 0
+      },
+      {
+        "sequence": 1602,
+        "exposure": 88.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.27826666666666666,
+        "oversized": 0
+      },
+      {
+        "sequence": 1545,
+        "exposure": 76.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.31114285714285717,
+        "oversized": 0
+      },
+      {
+        "sequence": 362,
+        "exposure": 108.24999999999999,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3875454545454545,
+        "oversized": 0
+      },
+      {
+        "sequence": 1301,
+        "exposure": 110.75000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.29578571428571426,
+        "oversized": 0
+      },
+      {
+        "sequence": 1534,
+        "exposure": 103.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.29033333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 1595,
+        "exposure": 76.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.35946153846153844,
+        "oversized": 0
+      },
+      {
+        "sequence": 2053,
+        "exposure": 109.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.263875,
+        "oversized": 0
+      },
+      {
+        "sequence": 407,
+        "exposure": 65.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.29085714285714287,
+        "oversized": 0
+      },
+      {
+        "sequence": 809,
+        "exposure": 82.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.34623076923076923,
+        "oversized": 0
+      },
+      {
+        "sequence": 1951,
+        "exposure": 77.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3093076923076923,
+        "oversized": 0
+      },
+      {
+        "sequence": 977,
+        "exposure": 80.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.29264285714285715,
+        "oversized": 0
+      },
+      {
+        "sequence": 1028,
+        "exposure": 97.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.36215384615384616,
+        "oversized": 0
+      },
+      {
+        "sequence": 1118,
+        "exposure": 107.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3749166666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 560,
+        "exposure": 106.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.37766666666666665,
+        "oversized": 0
+      },
+      {
+        "sequence": 1505,
+        "exposure": 147.91666666666669,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.2804285714285714,
+        "oversized": 0
+      },
+      {
+        "sequence": 499,
+        "exposure": 88.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33215384615384613,
+        "oversized": 0
+      },
+      {
+        "sequence": 323,
+        "exposure": 113.50000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.30092857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 93,
+        "exposure": 123.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4404,
+        "oversized": 0
+      },
+      {
+        "sequence": 862,
+        "exposure": 109.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.35046153846153844,
+        "oversized": 0
+      },
+      {
+        "sequence": 1977,
+        "exposure": 92.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.31292857142857144,
+        "oversized": 0
+      },
+      {
+        "sequence": 1022,
+        "exposure": 85.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.26076470588235295,
+        "oversized": 0
+      },
+      {
+        "sequence": 1363,
+        "exposure": 104.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3800909090909091,
+        "oversized": 0
+      },
+      {
+        "sequence": 1916,
+        "exposure": 103.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.28146666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 840,
+        "exposure": 137.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 9,
+        "utilization": 0.4845555555555556,
+        "oversized": 0
+      },
+      {
+        "sequence": 763,
+        "exposure": 85.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.38576923076923075,
+        "oversized": 0
+      },
+      {
+        "sequence": 1413,
+        "exposure": 98.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.3096,
+        "oversized": 0
+      },
+      {
+        "sequence": 1421,
+        "exposure": 100.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.32915384615384613,
+        "oversized": 0
+      },
+      {
+        "sequence": 564,
+        "exposure": 111.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3967272727272727,
+        "oversized": 0
+      },
+      {
+        "sequence": 32,
+        "exposure": 91.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 18,
+        "utilization": 0.19905555555555557,
+        "oversized": 0
+      },
+      {
+        "sequence": 1410,
+        "exposure": 123.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.37975,
+        "oversized": 0
+      },
+      {
+        "sequence": 364,
+        "exposure": 98.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2809333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 667,
+        "exposure": 106.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3436153846153846,
+        "oversized": 0
+      },
+      {
+        "sequence": 1477,
+        "exposure": 62.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.25829411764705884,
+        "oversized": 0
+      },
+      {
+        "sequence": 440,
+        "exposure": 88.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.26094117647058823,
+        "oversized": 0
+      },
+      {
+        "sequence": 1917,
+        "exposure": 74.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.28053333333333336,
+        "oversized": 0
+      },
+      {
+        "sequence": 1664,
+        "exposure": 98.58333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.29992857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 633,
+        "exposure": 99.74999999999999,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.32107142857142856,
+        "oversized": 0
+      },
+      {
+        "sequence": 1251,
+        "exposure": 150.33333333333331,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.34108333333333335,
+        "oversized": 0
+      },
+      {
+        "sequence": 1393,
+        "exposure": 110.50000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.32184615384615384,
+        "oversized": 0
+      },
+      {
+        "sequence": 642,
+        "exposure": 89.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.29986666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1900,
+        "exposure": 67.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.36727272727272725,
+        "oversized": 0
+      },
+      {
+        "sequence": 416,
+        "exposure": 87.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4355,
+        "oversized": 0
+      },
+      {
+        "sequence": 452,
+        "exposure": 79.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4334,
+        "oversized": 0
+      },
+      {
+        "sequence": 81,
+        "exposure": 111.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.38645454545454544,
+        "oversized": 0
+      },
+      {
+        "sequence": 1959,
+        "exposure": 89.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3179230769230769,
+        "oversized": 0
+      },
+      {
+        "sequence": 820,
+        "exposure": 83.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.28286666666666666,
+        "oversized": 0
+      },
+      {
+        "sequence": 432,
+        "exposure": 112.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.26686666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 1394,
+        "exposure": 90.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2581875,
+        "oversized": 0
+      },
+      {
+        "sequence": 311,
+        "exposure": 93.58333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.36833333333333335,
+        "oversized": 0
+      },
+      {
+        "sequence": 873,
+        "exposure": 106.49999999999999,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.38925,
+        "oversized": 0
+      },
+      {
+        "sequence": 450,
+        "exposure": 85.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3314615384615385,
+        "oversized": 0
+      },
+      {
+        "sequence": 1076,
+        "exposure": 111.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3315,
+        "oversized": 0
+      },
+      {
+        "sequence": 1610,
+        "exposure": 117.66666666666666,
+        "high_colocated": 1,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.35015384615384615,
+        "oversized": 0
+      },
+      {
+        "sequence": 1366,
+        "exposure": 90.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.30315384615384616,
+        "oversized": 0
+      },
+      {
+        "sequence": 1564,
+        "exposure": 91.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.25223529411764706,
+        "oversized": 0
+      },
+      {
+        "sequence": 1291,
+        "exposure": 121.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3027142857142857,
+        "oversized": 0
+      },
+      {
+        "sequence": 721,
+        "exposure": 86.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.409,
+        "oversized": 0
+      },
+      {
+        "sequence": 106,
+        "exposure": 78.58333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.30866666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 1146,
+        "exposure": 97.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.30092857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 888,
+        "exposure": 64.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33853846153846157,
+        "oversized": 0
+      },
+      {
+        "sequence": 1420,
+        "exposure": 106.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.4027272727272727,
+        "oversized": 0
+      },
+      {
+        "sequence": 2095,
+        "exposure": 81.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3227857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 533,
+        "exposure": 73.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3698461538461538,
+        "oversized": 0
+      },
+      {
+        "sequence": 730,
+        "exposure": 104.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 21,
+        "utilization": 0.20966666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1408,
+        "exposure": 80.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3379285714285714,
+        "oversized": 0
+      },
+      {
+        "sequence": 105,
+        "exposure": 88.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.28485714285714286,
+        "oversized": 0
+      },
+      {
+        "sequence": 266,
+        "exposure": 101.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3563076923076923,
+        "oversized": 0
+      },
+      {
+        "sequence": 1371,
+        "exposure": 101.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3077142857142857,
+        "oversized": 0
+      },
+      {
+        "sequence": 1214,
+        "exposure": 96.58333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.31264285714285717,
+        "oversized": 0
+      },
+      {
+        "sequence": 2000,
+        "exposure": 108.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.4148,
+        "oversized": 0
+      },
+      {
+        "sequence": 978,
+        "exposure": 121.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.39890909090909094,
+        "oversized": 0
+      },
+      {
+        "sequence": 1985,
+        "exposure": 95.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.35063636363636363,
+        "oversized": 0
+      },
+      {
+        "sequence": 39,
+        "exposure": 127.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3505,
+        "oversized": 0
+      },
+      {
+        "sequence": 339,
+        "exposure": 123.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3325,
+        "oversized": 0
+      },
+      {
+        "sequence": 961,
+        "exposure": 69.74999999999999,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.38725,
+        "oversized": 0
+      },
+      {
+        "sequence": 1212,
+        "exposure": 122.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.35483333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 1427,
+        "exposure": 84.58333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.37072727272727274,
+        "oversized": 0
+      },
+      {
+        "sequence": 525,
+        "exposure": 89.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.36315384615384616,
+        "oversized": 0
+      },
+      {
+        "sequence": 189,
+        "exposure": 109.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.2417058823529412,
+        "oversized": 0
+      },
+      {
+        "sequence": 1836,
+        "exposure": 106.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.34341666666666665,
+        "oversized": 0
+      },
+      {
+        "sequence": 1111,
+        "exposure": 122.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.25666666666666665,
+        "oversized": 0
+      },
+      {
+        "sequence": 732,
+        "exposure": 111.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.299,
+        "oversized": 0
+      },
+      {
+        "sequence": 1507,
+        "exposure": 87.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.35741666666666666,
+        "oversized": 0
+      },
+      {
+        "sequence": 5,
+        "exposure": 92.66666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.26853333333333335,
+        "oversized": 0
+      },
+      {
+        "sequence": 1621,
+        "exposure": 106.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3869166666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1723,
+        "exposure": 96.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.29914285714285715,
+        "oversized": 0
+      },
+      {
+        "sequence": 1456,
+        "exposure": 115.25000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.4012727272727273,
+        "oversized": 0
+      },
+      {
+        "sequence": 442,
+        "exposure": 112.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3293846153846154,
+        "oversized": 0
+      },
+      {
+        "sequence": 1353,
+        "exposure": 92.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.4328181818181818,
+        "oversized": 0
+      },
+      {
+        "sequence": 861,
+        "exposure": 109.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33384615384615385,
+        "oversized": 0
+      },
+      {
+        "sequence": 1969,
+        "exposure": 99.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.387,
+        "oversized": 0
+      },
+      {
+        "sequence": 1409,
+        "exposure": 96.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.351,
+        "oversized": 0
+      },
+      {
+        "sequence": 1356,
+        "exposure": 97.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3151538461538462,
+        "oversized": 0
+      },
+      {
+        "sequence": 1814,
+        "exposure": 64.16666666666667,
+        "high_colocated": 1,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.37218181818181817,
+        "oversized": 0
+      },
+      {
+        "sequence": 1383,
+        "exposure": 81.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2784375,
+        "oversized": 0
+      },
+      {
+        "sequence": 1614,
+        "exposure": 85.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33584615384615385,
+        "oversized": 0
+      },
+      {
+        "sequence": 1528,
+        "exposure": 86.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.3137333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 1324,
+        "exposure": 94.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33707692307692305,
+        "oversized": 0
+      },
+      {
+        "sequence": 1399,
+        "exposure": 129.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2746875,
+        "oversized": 0
+      },
+      {
+        "sequence": 878,
+        "exposure": 104.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3191538461538462,
+        "oversized": 0
+      },
+      {
+        "sequence": 1138,
+        "exposure": 55.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.31842857142857145,
+        "oversized": 0
+      },
+      {
+        "sequence": 1194,
+        "exposure": 101.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2724375,
+        "oversized": 0
+      },
+      {
+        "sequence": 851,
+        "exposure": 129.08333333333331,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 9,
+        "utilization": 0.4572222222222222,
+        "oversized": 0
+      },
+      {
+        "sequence": 1147,
+        "exposure": 69.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.40241666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 301,
+        "exposure": 131.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2712,
+        "oversized": 0
+      },
+      {
+        "sequence": 1639,
+        "exposure": 115.08333333333333,
+        "high_colocated": 1,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3426923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 1626,
+        "exposure": 106.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.35208333333333336,
+        "oversized": 0
+      },
+      {
+        "sequence": 1735,
+        "exposure": 80.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2558125,
+        "oversized": 0
+      },
+      {
+        "sequence": 1810,
+        "exposure": 87.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.37772727272727274,
+        "oversized": 0
+      },
+      {
+        "sequence": 63,
+        "exposure": 75.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2648125,
+        "oversized": 0
+      },
+      {
+        "sequence": 1532,
+        "exposure": 87.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.283875,
+        "oversized": 0
+      },
+      {
+        "sequence": 718,
+        "exposure": 104.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3163076923076923,
+        "oversized": 0
+      },
+      {
+        "sequence": 1623,
+        "exposure": 53.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2926666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1245,
+        "exposure": 83.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.36141666666666666,
+        "oversized": 0
+      },
+      {
+        "sequence": 998,
+        "exposure": 81.25,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.40554545454545454,
+        "oversized": 0
+      },
+      {
+        "sequence": 1992,
+        "exposure": 91.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.38008333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 654,
+        "exposure": 91.41666666666666,
+        "high_colocated": 1,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3387857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 1135,
+        "exposure": 119.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33915384615384614,
+        "oversized": 0
+      },
+      {
+        "sequence": 1499,
+        "exposure": 97.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33576923076923076,
+        "oversized": 0
+      },
+      {
+        "sequence": 1508,
+        "exposure": 89.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.3181333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 329,
+        "exposure": 127.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3400909090909091,
+        "oversized": 0
+      },
+      {
+        "sequence": 279,
+        "exposure": 83.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 18,
+        "utilization": 0.2228888888888889,
+        "oversized": 0
+      },
+      {
+        "sequence": 277,
+        "exposure": 129.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.3382727272727273,
+        "oversized": 0
+      },
+      {
+        "sequence": 919,
+        "exposure": 151.83333333333331,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.3964,
+        "oversized": 0
+      },
+      {
+        "sequence": 349,
+        "exposure": 98.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.389,
+        "oversized": 0
+      },
+      {
+        "sequence": 2015,
+        "exposure": 96.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3165,
+        "oversized": 0
+      },
+      {
+        "sequence": 2007,
+        "exposure": 90.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.29286666666666666,
+        "oversized": 0
+      },
+      {
+        "sequence": 621,
+        "exposure": 109.66666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.27926666666666666,
+        "oversized": 0
+      },
+      {
+        "sequence": 1211,
+        "exposure": 80.75000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.33185714285714285,
+        "oversized": 0
+      },
+      {
+        "sequence": 65,
+        "exposure": 85.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 21,
+        "utilization": 0.21719047619047618,
+        "oversized": 0
+      },
+      {
+        "sequence": 49,
+        "exposure": 78.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.35415384615384615,
+        "oversized": 0
+      },
+      {
+        "sequence": 1635,
+        "exposure": 97.74999999999999,
+        "high_colocated": 1,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.244875,
+        "oversized": 0
+      },
+      {
+        "sequence": 1607,
+        "exposure": 98.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.294,
+        "oversized": 0
+      },
+      {
+        "sequence": 2066,
+        "exposure": 116.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3393333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 1093,
+        "exposure": 84.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.29606666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 410,
+        "exposure": 135.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.2585625,
+        "oversized": 0
+      },
+      {
+        "sequence": 689,
+        "exposure": 78.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.2464705882352941,
+        "oversized": 0
+      },
+      {
+        "sequence": 1661,
+        "exposure": 104.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33284615384615385,
+        "oversized": 0
+      },
+      {
+        "sequence": 534,
+        "exposure": 100.75000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.32890909090909093,
+        "oversized": 0
+      },
+      {
+        "sequence": 669,
+        "exposure": 77.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3142857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 735,
+        "exposure": 89.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.32092857142857145,
+        "oversized": 0
+      },
+      {
+        "sequence": 1524,
+        "exposure": 98.33333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2982666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 42,
+        "exposure": 123.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 9,
+        "utilization": 0.4991111111111111,
+        "oversized": 0
+      },
+      {
+        "sequence": 1658,
+        "exposure": 122.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.33215384615384613,
+        "oversized": 0
+      },
+      {
+        "sequence": 167,
+        "exposure": 114.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.35741666666666666,
+        "oversized": 0
+      },
+      {
+        "sequence": 1526,
+        "exposure": 112.66666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.3992,
+        "oversized": 0
+      },
+      {
+        "sequence": 490,
+        "exposure": 113.16666666666669,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.40345454545454545,
+        "oversized": 0
+      },
+      {
+        "sequence": 641,
+        "exposure": 102.25000000000001,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3142142857142857,
+        "oversized": 0
+      },
+      {
+        "sequence": 290,
+        "exposure": 89.41666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.30278571428571427,
+        "oversized": 0
+      },
+      {
+        "sequence": 1987,
+        "exposure": 98.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.2953571428571429,
+        "oversized": 0
+      },
+      {
+        "sequence": 555,
+        "exposure": 91.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.32276923076923075,
+        "oversized": 0
+      },
+      {
+        "sequence": 1058,
+        "exposure": 62.166666666666664,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.34376923076923077,
+        "oversized": 0
+      },
+      {
+        "sequence": 1081,
+        "exposure": 110.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.4,
+        "oversized": 0
+      },
+      {
+        "sequence": 1815,
+        "exposure": 71.75,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3269230769230769,
+        "oversized": 0
+      },
+      {
+        "sequence": 535,
+        "exposure": 140.83333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.33491666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 1956,
+        "exposure": 71.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.3346,
+        "oversized": 0
+      },
+      {
+        "sequence": 1296,
+        "exposure": 90.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.35233333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 1039,
+        "exposure": 81.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.2916666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 1527,
+        "exposure": 120.33333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3211538461538462,
+        "oversized": 0
+      },
+      {
+        "sequence": 828,
+        "exposure": 84.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 17,
+        "utilization": 0.24335294117647058,
+        "oversized": 0
+      },
+      {
+        "sequence": 1161,
+        "exposure": 79.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.29542857142857143,
+        "oversized": 0
+      },
+      {
+        "sequence": 1726,
+        "exposure": 90.75,
+        "high_colocated": 1,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.31753846153846155,
+        "oversized": 0
+      },
+      {
+        "sequence": 1013,
+        "exposure": 119.58333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3898333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 528,
+        "exposure": 104.41666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3414615384615385,
+        "oversized": 0
+      },
+      {
+        "sequence": 752,
+        "exposure": 81.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3007142857142857,
+        "oversized": 0
+      },
+      {
+        "sequence": 995,
+        "exposure": 72.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.26453333333333334,
+        "oversized": 0
+      },
+      {
+        "sequence": 1219,
+        "exposure": 84.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.27814285714285714,
+        "oversized": 0
+      },
+      {
+        "sequence": 286,
+        "exposure": 121.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3523846153846154,
+        "oversized": 0
+      },
+      {
+        "sequence": 314,
+        "exposure": 99.91666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.31023076923076925,
+        "oversized": 0
+      },
+      {
+        "sequence": 1994,
+        "exposure": 93.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.3052142857142857,
+        "oversized": 0
+      },
+      {
+        "sequence": 333,
+        "exposure": 78.91666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.273125,
+        "oversized": 0
+      },
+      {
+        "sequence": 182,
+        "exposure": 119.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.34883333333333333,
+        "oversized": 0
+      },
+      {
+        "sequence": 687,
+        "exposure": 86.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.36666666666666664,
+        "oversized": 0
+      },
+      {
+        "sequence": 41,
+        "exposure": 163.08333333333331,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 9,
+        "utilization": 0.4726666666666667,
+        "oversized": 0
+      },
+      {
+        "sequence": 275,
+        "exposure": 77.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.31961538461538463,
+        "oversized": 0
+      },
+      {
+        "sequence": 675,
+        "exposure": 119.66666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.3333846153846154,
+        "oversized": 0
+      },
+      {
+        "sequence": 1856,
+        "exposure": 79.16666666666667,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 16,
+        "utilization": 0.240625,
+        "oversized": 0
+      },
+      {
+        "sequence": 1137,
+        "exposure": 87.83333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 12,
+        "utilization": 0.3375,
+        "oversized": 0
+      },
+      {
+        "sequence": 749,
+        "exposure": 141.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.26607142857142857,
+        "oversized": 0
+      },
+      {
+        "sequence": 908,
+        "exposure": 96.08333333333333,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 15,
+        "utilization": 0.3088,
+        "oversized": 0
+      },
+      {
+        "sequence": 437,
+        "exposure": 113.0,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.32284615384615384,
+        "oversized": 0
+      },
+      {
+        "sequence": 491,
+        "exposure": 93.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 13,
+        "utilization": 0.30438461538461536,
+        "oversized": 0
+      },
+      {
+        "sequence": 1550,
+        "exposure": 74.5,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.42563636363636365,
+        "oversized": 0
+      },
+      {
+        "sequence": 706,
+        "exposure": 185.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 10,
+        "utilization": 0.3947,
+        "oversized": 0
+      },
+      {
+        "sequence": 1572,
+        "exposure": 133.08333333333334,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.385,
+        "oversized": 0
+      },
+      {
+        "sequence": 1633,
+        "exposure": 116.99999999999999,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 11,
+        "utilization": 0.35654545454545455,
+        "oversized": 0
+      },
+      {
+        "sequence": 1672,
+        "exposure": 100.16666666666666,
+        "high_colocated": 0,
+        "forbidden": 0,
+        "boxes": 14,
+        "utilization": 0.29078571428571426,
         "oversized": 0
       }
     ]
