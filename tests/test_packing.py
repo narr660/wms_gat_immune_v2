@@ -116,3 +116,14 @@ def test_risk_cost_prefers_safer_existing_box():
 
     space_only = choose(env, safety, 2, PolicyConfig(risk_weight=0.0, newbox_weight=0.25))
     assert space_only[0] in (0, 1)                       # 위험 무시 시 기존 박스 아무 곳
+
+
+def test_theta_for_recall_picks_largest_threshold_meeting_target():
+    from scripts.select_threshold import theta_for_recall
+    probs = np.array([0.1, 0.2, 0.3, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 0.6])
+    is_high = np.array([False, False, False] + [True] * 9 + [False])
+    theta = theta_for_recall(probs, is_high, 1.0)
+    assert theta == 0.91                                   # 전부 잡으려면 최솟값
+    theta = theta_for_recall(probs, is_high, 0.9)          # 9개 중 8개(88.9%)로는 부족 -> 9개 전부
+    assert (probs[is_high] >= theta).mean() >= 0.9
+    assert theta_for_recall(probs, np.zeros_like(is_high), 0.99) is None

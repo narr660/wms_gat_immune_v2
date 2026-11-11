@@ -16,6 +16,15 @@ from src.pipeline import device_auto, prepare_data, run_dir, save_json
 from src.schema import RELATIONS, max_grade
 
 
+def theta_for_recall(probs: np.ndarray, is_high: np.ndarray, recall: float):
+    """실제 최고 등급 쌍의 재현율 >= recall 을 만족하는 가장 큰 theta. 고위험이 없으면 None."""
+    high_p = np.sort(probs[is_high])
+    if len(high_p) == 0:
+        return None
+    idx = int(np.floor((1 - recall) * len(high_p)))
+    return float(high_p[idx])
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True)
@@ -45,14 +54,11 @@ def main():
     for r in RELATIONS:
         p = np.concatenate(probs[r])
         high = np.concatenate(is_high[r])
-        high_p = np.sort(p[high])
-        if len(high_p) == 0:
+        theta = theta_for_recall(p, high, args.recall)
+        if theta is None:
             thresholds[r] = 0.5
             print(f"{r}: 검증셋에 최고 등급 쌍이 없어 0.5 사용")
             continue
-        # 재현율 >= 목표가 되는 가장 큰 theta = 상위 recall 분위의 확률값
-        idx = int(np.floor((1 - args.recall) * len(high_p)))
-        theta = float(high_p[idx])
         recall = float((p[high] >= theta).mean())
         masked_rate = float((p >= theta).mean())
         thresholds[r] = theta
