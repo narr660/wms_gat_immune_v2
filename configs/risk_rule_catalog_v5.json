@@ -1,0 +1,79 @@
+{
+  "version": "V5-12",
+  "catalog_status": "draft",
+  "auto_enforcement": false,
+  "rules": [
+    {
+      "rule_id": "IMDG-SEG-001",
+      "source": "IMDG Code Amendment 42-24",
+      "source_section": "Chapter 7.2; DGL column 16b",
+      "source_url": "https://imo-epublications.org/content/books/9789280117974",
+      "relation": "contamination",
+      "rule_type": "regulatory",
+      "application_scope": "maritime_dangerous_goods",
+      "required_fields": [
+        "un_number",
+        "imdg_class",
+        "subsidiary_hazard",
+        "packing_group",
+        "segregation_code"
+      ],
+      "candidate_decision": "hard_constraint",
+      "implementation_status": "pending_verification",
+      "verified": false
+    },
+    {
+      "rule_id": "KR-DG-001",
+      "source": "위험물안전관리법 시행규칙",
+      "source_section": "별표 19 부표 2",
+      "source_url": "https://www.law.go.kr/LSW/flDownload.do?bylClsCd=110201&flSeq=117350549&gubun=",
+      "relation": "contamination",
+      "rule_type": "regulatory",
+      "application_scope": "korean_dangerous_goods_transport",
+      "required_fields": [
+        "kr_dg_class",
+        "quantity",
+        "designated_quantity",
+        "regulatory_applicability"
+      ],
+      "candidate_decision": "hard_constraint",
+      "implementation_status": "pending_verification",
+      "verified": false
+    },
+    {
+      "rule_id": "HACCP-CONT-001",
+      "source": "Codex CXC 1-1969",
+      "source_section": "Food hygiene and contamination prevention",
+      "source_url": "https://www.fao.org/fao-who-codexalimentarius",
+      "relation": "contamination",
+      "rule_type": "safety_principle",
+      "application_scope": "research_synthetic_box_packing",
+      "required_fields": [
+        "category",
+        "hazard_type",
+        "leak_risk",
+        "sealed"
+      ],
+      "candidate_decision": "indirect_risk_0_3",
+      "implementation_status": "pending_mapping",
+      "verified": false
+    },
+    {
+      "rule_id": "HACCP-ODOR-001",
+      "source": "Codex food hygiene principles - research adaptation",
+      "source_section": "Food suitability and contamination prevention",
+      "source_url": "https://www.fao.org/fao-who-codexalimentarius",
+      "relation": "odor",
+      "rule_type": "safety_principle",
+      "application_scope": "research_synthetic_box_packing",
+      "required_fields": [
+        "odor_profile",
+        "sealed",
+        "category"
+      ],
+      "candidate_decision": "indirect_risk_0_3",
+      "implementation_status": "pending_mapping",
+      "verified": false
+    }
+  ]
+}

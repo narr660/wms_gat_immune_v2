@@ -1,0 +1,26 @@
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+.env
+*.log
+checkpoints/
+runs/
+wandb/
+/content/
+
+
+# Colab / Python
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+
+# Temporary archives
+*.zip
+
+# Secrets
+.env
+.env.*
+
+# 학습 산출물: 지표(json, npz)는 커밋하고 가중치·기억은 제외
+outputs/**/*.pt
+outputs/**/*.pkl
