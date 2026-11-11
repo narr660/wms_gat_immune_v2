@@ -1,0 +1,136 @@
+{
+  "model": "immune",
+  "seed": 42,
+  "best_epoch": 12,
+  "parameters": 40698,
+  "seconds": 485.14304423332214,
+  "val": {
+    "overall": {
+      "accuracy": 0.993345518678852,
+      "macro_f1": 0.9898796202847744,
+      "low_f1": 0.9963667781635429,
+      "mid_f1": 0.9848472472469604,
+      "high_f1": 0.9985220442358941,
+      "high_recall": 0.9979274961342744,
+      "high_precision": 0.9991204658128335,
+      "high_total": 820179,
+      "high_missed": 4622,
+      "low_total": 6724297,
+      "low_overestimated": 22744
+    },
+    "relations": {
+      "odor": {
+        "accuracy": 0.9999958313291647,
+        "macro_f1": 0.9998170237065708,
+        "low_f1": 0.9999978857501675,
+        "mid_f1": 0.9999144118559096,
+        "high_f1": 0.9994413853642966,
+        "high_recall": 1.0,
+        "high_precision": 0.9988833944807785,
+        "high_total": 6262,
+        "high_missed": 0,
+        "low_total": 3074383,
+        "low_overestimated": 13
+      },
+      "contamination": {
+        "accuracy": 0.9993605900272567,
+        "macro_f1": 0.9990542719282361,
+        "low_f1": 0.999850578225932,
+        "mid_f1": 0.9984810249370671,
+        "high_f1": 0.9999777066040471,
+        "high_recall": 0.9999702756929479,
+        "high_precision": 0.999985137625587,
+        "high_total": 67285,
+        "high_missed": 2,
+        "low_total": 2202142,
+        "low_overestimated": 650
+      },
+      "physical": {
+        "accuracy": 0.9806801346801347,
+        "macro_f1": 0.9707675652195162,
+        "low_f1": 0.9892518705145295,
+        "mid_f1": 0.9561463049479041,
+        "high_f1": 0.9961470407393386,
+        "high_recall": 0.9938122127098759,
+        "high_precision": 0.9984928653321348,
+        "high_total": 746632,
+        "high_missed": 4620,
+        "low_total": 1447772,
+        "low_overestimated": 22081
+      }
+    },
+    "rho_error": {
+      "odor": 0.24251771597635177,
+      "contamination": 0.10997133628716545,
+      "physical": 0.06758828080362744,
+      "mean": 0.14002577768904823
+    }
+  },
+  "test": {
+    "overall": {
+      "accuracy": 0.9932099834322057,
+      "macro_f1": 0.9896473768445384,
+      "low_f1": 0.9963748858050577,
+      "mid_f1": 0.9844720871528829,
+      "high_f1": 0.9984590745815702,
+      "high_recall": 0.9976343227012734,
+      "high_precision": 0.9992889675392388,
+      "high_total": 818368,
+      "high_missed": 5241,
+      "low_total": 6734541,
+      "low_overestimated": 22429
+    },
+    "relations": {
+      "odor": {
+        "accuracy": 0.9999967933301267,
+        "macro_f1": 0.9998723108997718,
+        "low_f1": 0.9999983744351975,
+        "mid_f1": 0.9999123237675256,
+        "high_f1": 0.9996662216288384,
+        "high_recall": 1.0,
+        "high_precision": 0.9993326659993327,
+        "high_total": 5990,
+        "high_missed": 0,
+        "low_total": 3075859,
+        "low_overestimated": 10
+      },
+      "contamination": {
+        "accuracy": 0.9994093314093314,
+        "macro_f1": 0.9990976559370287,
+        "low_f1": 0.9998717509105686,
+        "mid_f1": 0.9985606347583689,
+        "high_f1": 0.9999346244994689,
+        "high_recall": 0.999869257546291,
+        "high_precision": 1.0,
+        "high_total": 61189,
+        "high_missed": 8,
+        "low_total": 2222522,
+        "low_overestimated": 569
+      },
+      "physical": {
+        "accuracy": 0.9802238255571589,
+        "macro_f1": 0.9699721636968148,
+        "low_f1": 0.9892545320694074,
+        "mid_f1": 0.9549433029327544,
+        "high_f1": 0.9957763776164033,
+        "high_recall": 0.9930337105575294,
+        "high_precision": 0.9985342366183835,
+        "high_total": 751189,
+        "high_missed": 5233,
+        "low_total": 1436160,
+        "low_overestimated": 21850
+      }
+    },
+    "rho_error": {
+      "odor": 0.24256082508299087,
+      "contamination": 0.107820863312199,
+      "physical": 0.06779629151735987,
+      "mean": 0.13939265997084993
+    }
+  },
+  "beta": {
+    "contamination": 1.9110363721847534,
+    "odor": 3.3127706050872803,
+    "physical": 2.8271682262420654
+  }
+}
