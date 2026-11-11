@@ -1,0 +1,46 @@
+{
+  "experiment": "main",
+  "data": {
+    "dataset": "data/processed/rs_v3.pkl",
+    "split": "data/splits/rs_seed42.json",
+    "max_nodes": 100,
+    "sku_catalog": true,
+    "observability": "partial",
+    "limit_train": null,
+    "limit_val": null,
+    "limit_test": null
+  },
+  "model": {
+    "hidden_dim": 32,
+    "heads": 4,
+    "lambda_repulsion": 1.0,
+    "initial_beta": 0.5,
+    "memory_gain": {
+      "odor": 0.0,
+      "contamination": 0.0,
+      "physical": 0.4
+    }
+  },
+  "train": {
+    "max_epochs": 12,
+    "patience": 3,
+    "lr": 0.001,
+    "weight_decay": 0.0,
+    "lambda_rep_loss": 0.5,
+    "class_weight_cap": 8.0,
+    "memory_epochs": 4,
+    "memory_dropout": 0.3,
+    "memory_lr_scale": 0.1
+  },
+  "ainet": {
+    "clone_count": 5,
+    "learning_rate": 0.25,
+    "mutation_rate": 0.04,
+    "suppression_distance": 0.04,
+    "tau": 1.0,
+    "kappa": 3.0
+  },
+  "eval": {
+    "bootstrap": 2000
+  }
+}
