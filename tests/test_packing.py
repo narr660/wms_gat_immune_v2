@@ -92,20 +92,52 @@ def _risk(n, high_pairs=(), rho_pairs=()):
     return PairwiseRisk(n, rho, p, np.stack([src, dst]))
 
 
-def test_threshold_mask_blocks_risky_box():
-    items = [_item(), _item()]
-    risk = _risk(2, high_pairs=[(0, 1, 0.95)])
+def test_physical_mask_blocks_stacking_but_allows_side_by_side():
+    """물리 고위험: 충돌 상품 '위'만 막고 옆자리는 허용한다."""
+    items = [_item(size=(4, 10, 2)), _item(size=(3, 3, 3))]
+    risk = _risk(2, high_pairs=[(1, 0, 0.95)])           # 1(위) -> 0(아래) 물리 고위험
     env = PackingEnv(items)
-    env.step(0, 0, (0, 0, 0), item_dims(items[0]))
+    env.step(0, 0, (0, 0, 0), (4, 10, 2))                # x 0~3 바닥 점유
     safety = SafetyFilter(items, risk, {r: 0.9 for r in RELATIONS},
                           use_forbidden=False, use_mask=True)
     action = choose(env, safety, 1, PolicyConfig())
-    assert action[0] == 1                                # 마스킹 → 새 박스
+    box_id, (x, y, z), dims = action
+    assert box_id == 0 and x >= 4 and z == 0             # 같은 박스, 옆 바닥 (위가 아님)
+
+    # 바닥이 꽉 차서 위에밖에 못 놓으면 → 새 박스
+    items2 = [_item(size=(10, 10, 2)), _item(size=(3, 3, 3))]
+    risk2 = _risk(2, high_pairs=[(1, 0, 0.95)])
+    env2 = PackingEnv(items2)
+    env2.step(0, 0, (0, 0, 0), (10, 10, 2))
+    safety2 = SafetyFilter(items2, risk2, {r: 0.9 for r in RELATIONS},
+                           use_forbidden=False, use_mask=True)
+    action2 = choose(env2, safety2, 1, PolicyConfig())
+    assert action2[0] == 1
+
+
+def test_odor_mask_still_blocks_whole_box():
+    items = [_item(size=(4, 10, 2)), _item(size=(3, 3, 3))]
+    src = np.array([0, 1]); dst = np.array([1, 0])
+    rho = {r: np.zeros(2, dtype=np.float32) for r in RELATIONS}
+    p = {r: np.zeros(2, dtype=np.float32) for r in RELATIONS}
+    p["odor"][:] = 0.95                                   # 냄새 고위험 (양방향)
+    risk = PairwiseRisk(2, rho, p, np.stack([src, dst]))
+    env = PackingEnv(items)
+    env.step(0, 0, (0, 0, 0), (4, 10, 2))
+    safety = SafetyFilter(items, risk, {r: 0.9 for r in RELATIONS},
+                          use_forbidden=False, use_mask=True)
+    action = choose(env, safety, 1, PolicyConfig())
+    assert action[0] == 1                                 # 옆자리가 비어 있어도 박스 전체 금지
 
 
 def test_risk_cost_prefers_safer_existing_box():
     items = [_item(), _item(), _item()]
-    risk = _risk(3, rho_pairs=[(2, 0, 0.9), (0, 2, 0.9), (2, 1, 0.05)])
+    src = np.array([2, 0, 2, 1, 0, 1]); dst = np.array([0, 2, 1, 2, 1, 0])
+    rho = {r: np.zeros(6, dtype=np.float32) for r in RELATIONS}
+    p = {r: np.zeros(6, dtype=np.float32) for r in RELATIONS}
+    rho["odor"][0] = rho["odor"][1] = 0.9                 # 2<->0 냄새 위험 (박스 비용)
+    rho["odor"][2] = 0.05                                 # 2->1 낮음
+    risk = PairwiseRisk(3, rho, p, np.stack([src, dst]))
     env = PackingEnv(items)
     env.step(0, 0, (0, 0, 0), item_dims(items[0]))       # 박스0: 위험 높은 상대
     env.step(1, 1, (0, 0, 0), item_dims(items[1]))       # 박스1: 위험 낮은 상대

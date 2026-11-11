@@ -68,7 +68,22 @@ def pack_sequence(items, safety, policy_cfg, allow_rotation=True):
     return env
 
 
+def _stacked_pairs(box):
+    """바닥이 겹치고 위에 있는 (위, 아래) 상품 쌍 — 물리 위험이 실제로 걸리는 쌍."""
+    pairs = []
+    ps = box.placements
+    for i, top in enumerate(ps):
+        for bottom in ps[:i] + ps[i + 1:]:
+            if top.z < bottom.z + bottom.dims[2]:
+                continue                                     # 위에 있지 않음
+            if (top.x < bottom.x + bottom.dims[0] and bottom.x < top.x + top.dims[0]
+                    and top.y < bottom.y + bottom.dims[1] and bottom.y < top.y + top.dims[1]):
+                pairs.append((top.item_index, bottom.item_index))
+    return pairs
+
+
 def evaluate_boxes(env: PackingEnv, items):
+    """위험 노출: 냄새·오염은 같은 박스 쌍(양방향), 물리는 겹쳐 쌓인 쌍(위->아래)만."""
     exposure, high_pairs, forbidden = 0.0, 0, 0
     for box in env.boxes:
         idx = box.item_indices()
@@ -78,9 +93,16 @@ def evaluate_boxes(env: PackingEnv, items):
         keep = src != dst
         src, dst = src[keep], dst[keep]
         labels = pair_labels(items, src, dst)
-        for r in RELATIONS:
+        for r in ("odor", "contamination"):
             exposure += float(labels[r].sum()) / max_grade(r)
             high_pairs += int((labels[r] == max_grade(r)).sum())
+        stacked = _stacked_pairs(box)
+        if stacked:
+            tops = np.array([t for t, _ in stacked])
+            bottoms = np.array([b for _, b in stacked])
+            phys = pair_labels(items, tops, bottoms)["physical"]
+            exposure += float(phys.sum()) / max_grade("physical")
+            high_pairs += int((phys == max_grade("physical")).sum())
         for a, b in zip(src, dst):
             if a < b and forbidden_pair(items[a], items[b]):
                 forbidden += 1

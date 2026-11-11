@@ -64,13 +64,16 @@ class Box:
         xs, ys = np.nonzero(z + h <= BOX)
         return [(int(x), int(y), int(z[x, y])) for x, y in zip(xs, ys)]
 
-    def best_spot(self, dims) -> Optional[Tuple[int, int, int]]:
-        """가장 낮은 자리(z, 그다음 x, y 순)를 고른다."""
+    def best_spot(self, dims, blocked: Optional[np.ndarray] = None) -> Optional[Tuple[int, int, int]]:
+        """가장 낮은 자리(z, 그다음 x, y 순). blocked[x, y]=True 칸을 덮는 자리는 제외."""
         w, d, h = dims
         z = self._z_grid(w, d)
         if z is None or h > BOX:
             return None
         masked = np.where(z + h <= BOX, z, BOX + 1)
+        if blocked is not None and blocked.any():
+            hit = sliding_window_view(blocked, (w, d)).max(axis=(2, 3))
+            masked = np.where(hit, BOX + 1, masked)
         x, y = np.unravel_index(int(np.argmin(masked)), masked.shape)   # 행 우선 = (z, x, y) 순 동률 처리
         if masked[x, y] > BOX:
             return None
@@ -99,10 +102,12 @@ class PackingEnv:
         self.boxes: List[Box] = []
         self.oversized: List[int] = []           # 박스보다 큰 상품 (전용 박스로 간주)
 
-    def feasible_actions(self, item_index: int):
+    def feasible_actions(self, item_index: int, blocked_by_box=None):
         """(박스 번호, 자리, 회전된 치수) 목록. 박스 번호 == len(boxes) 는 '새 박스 열기'.
 
         박스마다 회전들 중 가장 낮은 자리(동률이면 납작한 회전)를 하나씩 올린다.
+        blocked_by_box[b] 가 주어지면 그 박스에서 해당 칸을 덮는 자리는 제외한다
+        (물리 '쌓기 금지' 마스킹).
         """
         base = item_dims(self.items[item_index])
         if max(base) > BOX:                       # 어떤 회전으로도 안 들어감
@@ -110,9 +115,10 @@ class PackingEnv:
         actions = []
         rots = orientations(base, self.allow_rotation)
         for b, box in enumerate(self.boxes):
+            blocked = blocked_by_box[b] if blocked_by_box is not None else None
             best = None
             for dims in rots:
-                spot = box.best_spot(dims)
+                spot = box.best_spot(dims, blocked)
                 if spot is not None and (best is None or spot[2] < best[0][2]):
                     best = (spot, dims)
             if best is not None:
