@@ -1,0 +1,167 @@
+{
+  "seed": 42,
+  "constraint_max_colocated": 0,
+  "rows": [
+    {
+      "recall": 0.99,
+      "theta": 0.5927,
+      "newbox": 0.25,
+      "high_colocated": 5,
+      "forbidden": 0,
+      "exposure": 2038.7,
+      "boxes_mean": 65.27,
+      "utilization": 0.0662
+    },
+    {
+      "recall": 0.99,
+      "theta": 0.5927,
+      "newbox": 0.5,
+      "high_colocated": 3,
+      "forbidden": 0,
+      "exposure": 10561.9,
+      "boxes_mean": 29.13,
+      "utilization": 0.1495
+    },
+    {
+      "recall": 0.99,
+      "theta": 0.5927,
+      "newbox": 1.0,
+      "high_colocated": 14,
+      "forbidden": 0,
+      "exposure": 42249.4,
+      "boxes_mean": 9.82,
+      "utilization": 0.446
+    },
+    {
+      "recall": 0.99,
+      "theta": 0.5927,
+      "newbox": 2.0,
+      "high_colocated": 19,
+      "forbidden": 0,
+      "exposure": 47752.9,
+      "boxes_mean": 9.25,
+      "utilization": 0.4738
+    },
+    {
+      "recall": 0.97,
+      "theta": 0.8534,
+      "newbox": 0.25,
+      "high_colocated": 5,
+      "forbidden": 0,
+      "exposure": 2038.0,
+      "boxes_mean": 65.27,
+      "utilization": 0.0662
+    },
+    {
+      "recall": 0.97,
+      "theta": 0.8534,
+      "newbox": 0.5,
+      "high_colocated": 3,
+      "forbidden": 0,
+      "exposure": 10536.4,
+      "boxes_mean": 29.14,
+      "utilization": 0.1495
+    },
+    {
+      "recall": 0.97,
+      "theta": 0.8534,
+      "newbox": 1.0,
+      "high_colocated": 25,
+      "forbidden": 0,
+      "exposure": 42352.1,
+      "boxes_mean": 9.83,
+      "utilization": 0.4453
+    },
+    {
+      "recall": 0.97,
+      "theta": 0.8534,
+      "newbox": 2.0,
+      "high_colocated": 72,
+      "forbidden": 0,
+      "exposure": 48133.8,
+      "boxes_mean": 9.23,
+      "utilization": 0.4748
+    },
+    {
+      "recall": 0.95,
+      "theta": 0.945,
+      "newbox": 0.25,
+      "high_colocated": 5,
+      "forbidden": 0,
+      "exposure": 2038.3,
+      "boxes_mean": 65.27,
+      "utilization": 0.0662
+    },
+    {
+      "recall": 0.95,
+      "theta": 0.945,
+      "newbox": 0.5,
+      "high_colocated": 3,
+      "forbidden": 0,
+      "exposure": 10511.2,
+      "boxes_mean": 29.16,
+      "utilization": 0.1494
+    },
+    {
+      "recall": 0.95,
+      "theta": 0.945,
+      "newbox": 1.0,
+      "high_colocated": 51,
+      "forbidden": 0,
+      "exposure": 42518.0,
+      "boxes_mean": 9.83,
+      "utilization": 0.4447
+    },
+    {
+      "recall": 0.95,
+      "theta": 0.945,
+      "newbox": 2.0,
+      "high_colocated": 155,
+      "forbidden": 0,
+      "exposure": 48546.4,
+      "boxes_mean": 9.19,
+      "utilization": 0.4765
+    },
+    {
+      "recall": 0.9,
+      "theta": 0.9935,
+      "newbox": 0.25,
+      "high_colocated": 5,
+      "forbidden": 0,
+      "exposure": 2039.9,
+      "boxes_mean": 65.27,
+      "utilization": 0.0662
+    },
+    {
+      "recall": 0.9,
+      "theta": 0.9935,
+      "newbox": 0.5,
+      "high_colocated": 4,
+      "forbidden": 0,
+      "exposure": 10472.2,
+      "boxes_mean": 29.2,
+      "utilization": 0.1491
+    },
+    {
+      "recall": 0.9,
+      "theta": 0.9935,
+      "newbox": 1.0,
+      "high_colocated": 191,
+      "forbidden": 0,
+      "exposure": 42812.6,
+      "boxes_mean": 9.83,
+      "utilization": 0.4451
+    },
+    {
+      "recall": 0.9,
+      "theta": 0.9935,
+      "newbox": 2.0,
+      "high_colocated": 470,
+      "forbidden": 0,
+      "exposure": 49333.3,
+      "boxes_mean": 9.12,
+      "utilization": 0.4799
+    }
+  ],
+  "chosen": null
+}
