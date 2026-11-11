@@ -23,7 +23,7 @@ from src.immune.ainet import AiNetMemory
 from src.models.factory import build_model
 from src.packing.environment import PackingEnv
 from src.packing.policies import PolicyConfig, choose
-from src.packing.ppo import PolicyNet, gae, ppo_update, rollout
+from src.packing.ppo import PolicyNet, bc_dataset, bc_train, gae, ppo_update, rollout
 from src.packing.safety import SafetyFilter
 from src.pipeline import device_auto, run_dir, save_json
 from src.schema import RELATIONS
@@ -39,6 +39,10 @@ def main():
     parser.add_argument("--batch-episodes", type=int, default=16)
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--eval-every", type=int, default=20, help="N 업데이트마다 검증")
+    parser.add_argument("--bc-epochs", type=int, default=4, help="탐욕 모방 워밍업 에폭 (0=끔)")
+    parser.add_argument("--bc-seqs", type=int, default=300, help="모방 데이터 시퀀스 수")
+    parser.add_argument("--ent-coef", type=float, default=0.003)
+    parser.add_argument("--init", default=None, help="이어서 학습할 best.pt 경로")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -84,6 +88,9 @@ def main():
 
     policy_cfg = PolicyConfig()                      # 균형점 가중치 (risk 1.0 · space 0.15 · newbox 1.0)
     net = PolicyNet().to(device)
+    if args.init:
+        net.load_state_dict(torch.load(args.init, map_location=device))
+        print(f"이어서 학습: {args.init}")
     opt = torch.optim.Adam(net.parameters(), lr=args.lr)
 
     def greedy_metrics(tables, use_net):
@@ -107,6 +114,15 @@ def main():
     base = greedy_metrics(val_tab, use_net=False)
     print(f"탐욕 기준선 (검증 {len(val_ids)}개): 동적재 {base['high']} | 박스 {base['boxes']:.2f} | 활용률 {base['util']:.1%}")
 
+    if args.bc_epochs > 0 and not args.init:
+        t0 = time.time()
+        make_safety = lambda items, risk: SafetyFilter(items, risk, thresholds)
+        data = bc_dataset(train_tab, None, make_safety, policy_cfg, limit_seqs=args.bc_seqs)
+        acc = bc_train(net, data, device, epochs=args.bc_epochs)
+        m0 = greedy_metrics(val_tab, use_net=True)
+        print(f"BC 워밍업: 샘플 {len(data):,} | 모방 정확도 {acc:.1%} | "
+              f"검증 동적재 {m0['high']} 박스 {m0['boxes']:.2f} 활용률 {m0['util']:.1%} ({time.time()-t0:.0f}s)")
+
     out_dir = Path("outputs") / cfg.experiment / f"ppo_seed{args.seed}"
     out_dir.mkdir(parents=True, exist_ok=True)
     best_key, history = None, []
@@ -122,12 +138,13 @@ def main():
             steps = rollout(env, safety, net, policy_cfg, device, greedy=False)
             adv, ret = gae(steps)
             episodes.append({"steps": steps, "adv": adv, "ret": ret})
-        stats = ppo_update(net, opt, episodes, device)
+        stats = ppo_update(net, opt, episodes, device, ent_coef=args.ent_coef)
         mean_r = float(np.mean([sum(s.reward for s in ep["steps"]) for ep in episodes]))
         if upd % args.eval_every == 0 or upd == n_updates:
             m = greedy_metrics(val_tab, use_net=True)
             # 선택 기준 = 비교 기준과 동일: 탐욕 이하 박스 중 동적재 최소, 동률이면 박스
-            key = (m["high"], m["boxes"]) if m["boxes"] <= base["boxes"] + 0.3 else (float("inf"), m["boxes"])
+            safe = m["high"] <= base["high"]
+            key = (0 if safe else 1, m["boxes"], m["high"])
             improved = best_key is None or key < best_key
             if improved:
                 best_key = key

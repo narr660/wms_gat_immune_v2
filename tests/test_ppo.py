@@ -116,3 +116,19 @@ def test_ppo_update_improves_reward():
         ppo_update(net, opt, make_batch(base=100 + 10 * it), device, epochs=4)
     after = mean_reward()
     assert after >= before - 0.3, f"보상 퇴보: {before:.2f} -> {after:.2f}"
+
+
+def test_bc_imitates_greedy_argmin():
+    """BC가 탐욕(비용 argmin) 행동을 높은 정확도로 모방한다."""
+    torch.manual_seed(0)
+    from src.packing.ppo import bc_dataset, bc_train
+    cfg = PolicyConfig()
+    tables = {}
+    for e in range(6):
+        items, safety = setup(n=12, seed=300 + e, high_frac=0.3)
+        tables[e] = (items, safety.risk)
+    make_safety = lambda items, risk: SafetyFilter(items, risk, THR)
+    data = bc_dataset(tables, None, make_safety, cfg)
+    net = PolicyNet(hidden=32)
+    acc = bc_train(net, data, torch.device("cpu"), epochs=8)
+    assert acc > 0.9, f"모방 정확도 부족: {acc:.2%}"

@@ -182,3 +182,47 @@ def ppo_update(net: PolicyNet, opt, episodes, device, clip=0.2, epochs=4,
         stats = {"policy_loss": float(l_pol.item()), "value_loss": float(l_val.item()),
                  "entropy": float(ent.item())}
     return stats
+
+
+def bc_dataset(tables, thresholds_unused, make_safety, cfg: PolicyConfig, limit_seqs=None):
+    """탐욕 교사: 각 스텝의 (전역, 후보, argmin-비용 행동) 수집."""
+    data = []
+    ids = list(tables.keys())[: limit_seqs or None]
+    for sid in ids:
+        items, risk = tables[sid]
+        safety = make_safety(items, risk)
+        env = PackingEnv(items)
+        for i in range(len(items)):
+            actions = candidate_actions(env, safety, i)
+            if not actions:
+                env.step(i, 0, (0, 0, 0))
+                continue
+            glob, cands, _ = featurize(env, safety, i, actions)
+            costs = [action_cost(cfg, row) for row in cands]
+            a = int(np.argmin(costs))
+            data.append(Step(glob, cands, a, 0.0, 0.0, -costs[a]))
+            env.step(i, *actions[a])
+    return data
+
+
+def bc_train(net: PolicyNet, data, device, epochs=4, batch=512, lr=1e-3):
+    """교차엔트로피로 탐욕 행동 모방 + 크리틱은 즉시 보상 근사로 예열."""
+    opt = torch.optim.Adam(net.parameters(), lr=lr)
+    idx = np.arange(len(data))
+    acc = 0.0
+    for ep in range(epochs):
+        np.random.shuffle(idx)
+        correct = total = 0
+        for b0 in range(0, len(idx), batch):
+            chunk = [data[k] for k in idx[b0:b0 + batch]]
+            glob, cands, mask, acts, _ = pad_batch(chunk, device)
+            dist = masked_dist(net, glob, cands, mask)
+            loss = -dist.log_prob(acts).mean()
+            v = net.value(glob)
+            tgt = torch.tensor([s.reward for s in chunk], device=device)
+            loss = loss + 0.5 * ((v - tgt) ** 2).mean()
+            opt.zero_grad(); loss.backward(); opt.step()
+            correct += int((dist.probs.argmax(-1) == acts).sum().item())
+            total += len(chunk)
+        acc = correct / total
+    return acc
