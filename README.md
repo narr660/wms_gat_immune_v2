@@ -101,6 +101,6 @@ python -m scripts.run_packing      --config configs/main.yaml --seed 42   # 4조
 python -m scripts.grade_flow       --config configs/main.yaml             # 등급 이동 확인 (재학습 불필요)
 ```
 
-적재 비교 조건: space(기준선) / filter(금지+마스킹) / risk(+위험 비용) / risk_memory(+aiNet 기억, 시퀀스 단위 고리 ②).
+적재 비교 조건: space(기준선) / filter(금지+마스킹) / risk(+위험 비용) / risk_memory(+aiNet 기억, 시퀀스 단위 고리 ②). 축 정렬 회전은 기본 켜짐(`--no-rotation` 으로 끄고 비교 가능) — 합성 데이터에서 박스 −20%, 활용률 +14%p 확인.
 지표: 위험 노출 지수(space=100), 고위험 동적재, 금지 위반, 박스 수, 활용률. 2단계(PPO)는 이 환경 위에 올린다.
 

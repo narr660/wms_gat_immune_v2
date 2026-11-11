@@ -1,7 +1,7 @@
 """적재 환경·안전 필터·정책의 핵심 동작 확인."""
 import numpy as np
 
-from src.packing.environment import BOX, Box, PackingEnv, item_dims
+from src.packing.environment import BOX, Box, PackingEnv, item_dims, orientations
 from src.packing.policies import PolicyConfig, choose
 from src.packing.safety import PairwiseRisk, SafetyFilter, forbidden_pair
 from src.schema import RELATIONS
@@ -25,14 +25,55 @@ def test_heightmap_stacks_and_respects_ceiling():
 def test_oversized_item_goes_to_dedicated_box():
     env = PackingEnv([_item(size=(12, 3, 3))])
     assert env.feasible_actions(0) == []
-    env.step(0, 0, (0, 0, 0))
+    env.step(0, 0, (0, 0, 0), item_dims(env.items[0]))
     assert env.oversized == [0] and env.boxes == []
+
+
+def test_orientations_unique_and_flat_first():
+    assert len(orientations((2, 3, 4), True)) == 6
+    assert len(orientations((2, 2, 4), True)) == 3
+    assert orientations((5, 5, 5), True) == [(5, 5, 5)]
+    assert orientations((2, 3, 4), False) == [(2, 3, 4)]
+    first = orientations((2, 3, 4), True)[0]
+    assert first[2] == 2 and first[0] * first[1] == 12      # 가장 납작하고 바닥 넓은 회전 먼저
+
+
+def test_rotation_enables_placement_in_narrow_strip():
+    """바닥에 깊이 2짜리 좁은 띠만 남은 박스: 회전 없이는 못 넣고, 회전하면 들어간다."""
+    items = [_item(size=(10, 8, 10)), _item(size=(3, 3, 2))]
+    for allow, expect_new_box in [(False, True), (True, False)]:
+        env = PackingEnv(items, allow_rotation=allow)
+        env.step(0, 0, (0, 0, 0), (10, 8, 10))               # y 0~7 가득, y 8~9 띠만 남음
+        actions = env.feasible_actions(1)
+        existing = [a for a in actions if a[0] == 0]
+        if allow:
+            assert existing and existing[0][2][1] <= 2       # 깊이 2 이하 회전으로 들어감
+        else:
+            assert not existing                              # (3,3,2)는 깊이 3이라 못 들어감
+
+
+def test_vectorized_best_spot_matches_bruteforce():
+    rng = __import__("numpy").random.default_rng(0)
+    for _ in range(20):
+        box = Box()
+        box.heightmap[:] = rng.integers(0, 11, size=(BOX, BOX))
+        dims = tuple(int(v) for v in rng.integers(1, 6, size=3))
+        w, d, h = dims
+        brute = []
+        for x in range(BOX - w + 1):
+            for y in range(BOX - d + 1):
+                z = int(box.heightmap[x:x + w, y:y + d].max())
+                if z + h <= BOX:
+                    brute.append((x, y, z))
+        expected = min(brute, key=lambda s: (s[2], s[0], s[1])) if brute else None
+        assert box.best_spot(dims) == expected
 
 
 def test_forbidden_pair_blocks_box():
     items = [_item(category="식품"), _item(hazard="toxic", level=0.9)]
     env = PackingEnv(items)
-    env.step(0, 0, env.feasible_actions(0)[0][1])        # 새 박스에 식품
+    _, spot, dims = env.feasible_actions(0)[0]
+    env.step(0, 0, spot, dims)                            # 새 박스에 식품
     safety = SafetyFilter(items, use_forbidden=True, use_mask=False)
     action = choose(env, safety, 1, PolicyConfig())
     assert action[0] == 1                                # 기존 박스가 막혀 새 박스를 연다
@@ -55,7 +96,7 @@ def test_threshold_mask_blocks_risky_box():
     items = [_item(), _item()]
     risk = _risk(2, high_pairs=[(0, 1, 0.95)])
     env = PackingEnv(items)
-    env.step(0, 0, (0, 0, 0))
+    env.step(0, 0, (0, 0, 0), item_dims(items[0]))
     safety = SafetyFilter(items, risk, {r: 0.9 for r in RELATIONS},
                           use_forbidden=False, use_mask=True)
     action = choose(env, safety, 1, PolicyConfig())
@@ -66,8 +107,8 @@ def test_risk_cost_prefers_safer_existing_box():
     items = [_item(), _item(), _item()]
     risk = _risk(3, rho_pairs=[(2, 0, 0.9), (0, 2, 0.9), (2, 1, 0.05)])
     env = PackingEnv(items)
-    env.step(0, 0, (0, 0, 0))                            # 박스0: 위험 높은 상대
-    env.step(1, 1, (0, 0, 0))                            # 박스1: 위험 낮은 상대
+    env.step(0, 0, (0, 0, 0), item_dims(items[0]))       # 박스0: 위험 높은 상대
+    env.step(1, 1, (0, 0, 0), item_dims(items[1]))       # 박스1: 위험 낮은 상대
     safety = SafetyFilter(items, risk, {r: 1.1 for r in RELATIONS},
                           use_forbidden=False, use_mask=False)
     action = choose(env, safety, 2, PolicyConfig(risk_weight=1.0, newbox_weight=0.25))

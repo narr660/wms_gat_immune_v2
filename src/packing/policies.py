@@ -18,9 +18,9 @@ class PolicyConfig:
 
 def choose(env: PackingEnv, safety: SafetyFilter, item_index: int,
            cfg: PolicyConfig):
-    """(박스 번호, 자리)를 돌려준다. 모든 기존 박스가 막히면 새 박스를 연다."""
+    """(박스 번호, 자리, 회전된 치수)를 돌려준다. 모든 기존 박스가 막히면 새 박스를 연다."""
     best, best_cost = None, float("inf")
-    for box_id, spot in env.feasible_actions(item_index):
+    for box_id, spot, dims in env.feasible_actions(item_index):
         is_new = box_id == len(env.boxes)
         box_items = [] if is_new else env.boxes[box_id].item_indices()
         if not is_new and not safety.box_allowed(item_index, box_items):
@@ -29,5 +29,5 @@ def choose(env: PackingEnv, safety: SafetyFilter, item_index: int,
                 + cfg.space_weight * spot[2] / BOX
                 + cfg.newbox_weight * float(is_new))
         if cost < best_cost:
-            best, best_cost = (box_id, spot), cost
+            best, best_cost = (box_id, spot, dims), cost
     return best

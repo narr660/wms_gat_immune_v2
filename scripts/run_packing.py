@@ -57,8 +57,8 @@ def sequence_risk(model, graph, device, memory: AiNetMemory = None):
     return PairwiseRisk(n, rho, p_high, graph.edge_index.numpy()), out
 
 
-def pack_sequence(items, safety, policy_cfg):
-    env = PackingEnv(items)
+def pack_sequence(items, safety, policy_cfg, allow_rotation=True):
+    env = PackingEnv(items, allow_rotation=allow_rotation)
     for i in range(len(items)):
         action = choose(env, safety, i, policy_cfg)
         if action is None:                 # 박스보다 큰 상품
@@ -92,6 +92,9 @@ def main():
     parser.add_argument("--config", required=True)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--limit", type=int, default=None, help="테스트 시퀀스 수 제한")
+    parser.add_argument("--no-rotation", action="store_true", help="축 정렬 회전 끄기 (비교용)")
+    parser.add_argument("--conditions", default=None,
+                        help="쉼표로 조건 선택 (예: space,risk). 기본: 전부")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -125,8 +128,13 @@ def main():
     test_ids = split["test"][: args.limit or None]
 
     policy = PolicyConfig()
-    results = {name: [] for name in CONDITIONS}
-    for name, flags in CONDITIONS.items():
+    selected = {k: v for k, v in CONDITIONS.items()
+                if args.conditions is None or k in args.conditions.split(",")}
+    assert selected, f"--conditions 가 비었습니다: {args.conditions}"
+    rotation = not args.no_rotation
+    print(f"회전: {'켜짐 (축 정렬)' if rotation else '꺼짐'} | 조건: {list(selected)}")
+    results = {name: [] for name in selected}
+    for name, flags in selected.items():
         memory = copy.deepcopy(base_memory) if flags["memory"] and base_memory else None
         if flags["memory"] and base_memory is None:
             print("경고: ainet_memory.pkl 이 없어 risk_memory 조건은 기억 없이 시작합니다.")
@@ -140,7 +148,7 @@ def main():
                                   thresholds, use_forbidden=flags["forbidden"],
                                   use_mask=flags["mask"])
             local_policy = policy if flags["risk_cost"] else PolicyConfig(risk_weight=0.0)
-            env = pack_sequence(items, safety, local_policy)
+            env = pack_sequence(items, safety, local_policy, allow_rotation=rotation)
             exposure, high_pairs, forbidden = evaluate_boxes(env, items)
             results[name].append(dict(
                 sequence=sid, exposure=exposure, high_colocated=high_pairs,
@@ -164,9 +172,11 @@ def main():
     out_dir = Path("reports") / cfg.experiment
     out_dir.mkdir(parents=True, exist_ok=True)
     summary = {}
-    base_exposure = np.mean([r["exposure"] for r in results["space"]])
-    lines = [f"# PART 3 (1단계) 적재 결과 — 시드 {args.seed}, 테스트 {len(test_ids)}개 시퀀스", "",
-             "| 조건 | 위험 노출 지수 (space=100) | 고위험 동적재 (합) | 금지 위반 (합) | 박스 수 (평균) | 활용률 (평균) |",
+    base_name = "space" if "space" in results else next(iter(results))
+    base_exposure = np.mean([r["exposure"] for r in results[base_name]]) or 1.0
+    lines = [f"# PART 3 (1단계) 적재 결과 — 시드 {args.seed}, 테스트 {len(test_ids)}개 시퀀스, "
+             f"회전 {'켜짐' if rotation else '꺼짐'}", "",
+             f"| 조건 | 위험 노출 지수 ({base_name}=100) | 고위험 동적재 (합) | 금지 위반 (합) | 박스 수 (평균) | 활용률 (평균) |",
              "|---|---|---|---|---|---|"]
     for name, rows in results.items():
         summary[name] = {
@@ -181,12 +191,13 @@ def main():
         s = summary[name]
         lines.append(f"| {name} | {s['exposure_index']:.1f} | {s['high_colocated']:,} | "
                      f"{s['forbidden']:,} | {s['boxes_mean']:.2f} | {s['utilization_mean']:.1%} |")
-    save_json(out_dir / f"packing_seed{args.seed}.json",
+    suffix = "" if rotation else "_norot"
+    save_json(out_dir / f"packing_seed{args.seed}{suffix}.json",
               {"seed": args.seed, "n_sequences": len(test_ids),
                "thresholds": thresholds, "summary": summary, "per_sequence": results})
-    (out_dir / f"packing_seed{args.seed}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (out_dir / f"packing_seed{args.seed}{suffix}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
-    print(f"저장: {out_dir}/packing_seed{args.seed}.md")
+    print(f"저장: {out_dir}/packing_seed{args.seed}{suffix}.md")
 
 
 if __name__ == "__main__":
