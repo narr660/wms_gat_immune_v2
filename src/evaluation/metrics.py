@@ -51,12 +51,23 @@ def _prf(cm: np.ndarray):
 
 
 def relation_metrics(cm: np.ndarray) -> Dict[str, float]:
-    """한 관계의 합산 혼동행렬 [K, K] -> 지표."""
+    """한 관계의 합산 혼동행렬 [K, K] -> 지표.
+
+    "per_grade" 는 low/mid/high로 묶기 전, 등급 하나하나의 precision/recall/F1이다.
+    mid_f1(1~K-2 등급 평균)만으로는 어떤 중간 등급이 특히 더 틀리는지 보이지 않아서,
+    등급별 상세 비교(물리 관계 등)에 쓴다.
+    """
     precision, recall, f1, true_n = _prf(cm)
     present = true_n > 0                      # 실제로 존재하는 등급만 평균
     k = cm.shape[0]
     mid = np.arange(1, k - 1)
     mid = mid[present[mid]]
+    per_grade = [
+        {"grade": int(g), "f1": float(f1[g]), "recall": float(recall[g]),
+         "precision": float(precision[g]), "total": int(true_n[g]),
+         "missed": int(true_n[g] - cm[g, g])}          # 그 등급을 다른 등급으로 잘못 예측한 수
+        for g in range(k) if present[g]
+    ]
     return {
         "accuracy": float(np.trace(cm) / max(cm.sum(), 1)),
         "macro_f1": float(f1[present].mean()),
@@ -69,6 +80,7 @@ def relation_metrics(cm: np.ndarray) -> Dict[str, float]:
         "high_missed": int(cm[-1].sum() - cm[-1, -1]),      # 고위험 미탐지 수
         "low_total": int(cm[0].sum()),
         "low_overestimated": int(cm[0].sum() - cm[0, 0]),   # 저위험 과대평가 수
+        "per_grade": per_grade,
     }
 
 

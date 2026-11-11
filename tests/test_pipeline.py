@@ -20,6 +20,12 @@ def test_relation_metrics_counts_misses_and_ignores_absent_classes():
     assert abs(m["high_recall"] - 0.7) < 1e-9
     f1_low, f1_mid, f1_high = 2 * 90 / (2 * 90 + 10), 2 * 8 / (2 * 8 + 2 + 3), 2 * 7 / (2 * 7 + 3)
     assert abs(m["macro_f1"] - np.mean([f1_low, f1_mid, f1_high])) < 1e-9
+    # per_grade: grade 1(존재하지 않음)은 빠지고, 등급 하나하나의 F1/미탐지가 나온다
+    grades = {row["grade"]: row for row in m["per_grade"]}
+    assert set(grades) == {0, 2, 3}
+    assert abs(grades[0]["f1"] - f1_low) < 1e-9
+    assert grades[0]["total"] == 100 and grades[0]["missed"] == 10
+    assert grades[3]["total"] == 10 and grades[3]["missed"] == 3
 
 
 def test_bootstrap_of_identical_models_is_zero():
