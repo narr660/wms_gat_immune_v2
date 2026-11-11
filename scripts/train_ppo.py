@@ -53,7 +53,7 @@ def main():
     mem_path = Path("outputs") / cfg.experiment / f"immune_memory_seed{args.seed}" / "ainet_memory.pkl"
     memory = AiNetMemory.load(mem_path) if mem_path.exists() else None
     thr_path = model_dir / "thresholds.json"
-    thresholds = json.loads(thr_path.read_text()) if thr_path.exists() else {r: 0.99 for r in RELATIONS}
+    thresholds = json.loads(thr_path.read_text())["thresholds"] if thr_path.exists() else {r: 0.99 for r in RELATIONS}
     print(f"aiNet 기억(frozen): {'불러옴' if memory else '없음'} | 임계값: {thresholds}")
 
     from src.pipeline import prepare_data
