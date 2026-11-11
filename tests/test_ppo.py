@@ -8,7 +8,24 @@ from src.packing.ppo import (PolicyNet, action_cost, candidate_actions,
                              featurize, gae, ppo_update, rollout)
 from src.packing.safety import SafetyFilter
 from src.schema import RELATIONS
-from tests.test_packing import _item, _risk
+
+from src.packing.safety import PairwiseRisk
+
+def _item(size=(3, 3, 3), category="가전", hazard="none", level=0.0):
+    return {"size": size, "category": category, "hazard_type": hazard, "hazard_level": level}
+
+def _risk(n, high_pairs=(), rho_pairs=()):
+    import numpy as _np
+    src = _np.repeat(_np.arange(n), n - 1)
+    dst = _np.concatenate([_np.delete(_np.arange(n), i) for i in range(n)])
+    rho = {r: _np.zeros(len(src), dtype=_np.float32) for r in RELATIONS}
+    p = {r: _np.zeros(len(src), dtype=_np.float32) for r in RELATIONS}
+    for (i, j, v) in high_pairs:
+        p["physical"][(src == i) & (dst == j)] = v
+    for (i, j, v) in rho_pairs:
+        rho["physical"][(src == i) & (dst == j)] = v
+    return PairwiseRisk(n, rho, p, _np.stack([src, dst]))
+
 
 THR = {r: 0.5 for r in RELATIONS}
 
